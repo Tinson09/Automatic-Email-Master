@@ -4,6 +4,7 @@ SUB_SHEET_NAME = "main"
 SHEET_PARAM_NAME_ROW = 1
 FIRST_COLUMN_INDEX = 1
 EMAIL_KEY = "email"
+EMAIL_SUBJECT_KEY = "subject"
 
 
 class Row:
@@ -28,6 +29,12 @@ class Row:
     def get_email(self):
         if EMAIL_KEY in self.row_data:
             return self.row_data[EMAIL_KEY]
+        else:
+            return None
+
+    def get_subject(self):
+        if EMAIL_SUBJECT_KEY in self.row_data:
+            return self.row_data[EMAIL_SUBJECT_KEY]
         else:
             return None
 
