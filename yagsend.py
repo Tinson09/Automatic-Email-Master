@@ -3,7 +3,7 @@ from draft import Neha, Amal
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import openpyxl
-from dateformat import Dennis
+from dateformat import reformat_date
 import sys, os
 from multiprocessing import Process
 
@@ -50,7 +50,7 @@ def Tinson(I, me, password, altemail, link, phone):
             HR_email = str(sheet.cell(row = i, column = 4).value)
             reciever = [HR_email]
             Appointment = sheet.cell(row = i, column = 5).value
-            Appointment = Dennis(str(Appointment))
+            Appointment = reformat_date(str(Appointment))
             secondary = str(sheet.cell(row = i, column = 6).value)
             cc2 = str(sheet.cell(row = i, column = 7).value)
             draft = str(sheet.cell(row = i, column = 8).value)
