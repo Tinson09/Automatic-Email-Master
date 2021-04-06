@@ -1,4 +1,11 @@
 from spreadsheet import Row
+import re
+import dateformat
+
+
+def is_date_field(key):
+    regex = re.compile(r'[a-z0-9]*_date$')
+    return regex.search(key)
 
 
 class Draft:
@@ -14,5 +21,6 @@ class Draft:
         for key in key_set:
             value = row.get_value()
             key = "{{" + key + "}}"
+            value = dateformat.reformat_date(value) if is_date_field(key) else value
             draft = draft.replace(key, value)
         return draft
