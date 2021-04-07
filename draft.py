@@ -19,7 +19,7 @@ class Draft:
         key_set = row.get_key_set()
         draft = self.email_template
         for key in key_set:
-            value = row.get_value()
+            value = row.get_value(key)
             key = "{{" + key + "}}"
             value = dateformat.reformat_date(value) if is_date_field(key) else value
             draft = draft.replace(key, value)

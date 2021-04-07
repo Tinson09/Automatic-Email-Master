@@ -8,10 +8,6 @@ EMAIL_SUBJECT_KEY = "subject"
 
 
 class Row:
-    def __init__(self):
-        self.row_data = dict()
-        self.key_set = []
-
     def __init__(self, row_data):
         self.row_data = dict(row_data)
         self.key_set = self.row_data.keys()
@@ -43,9 +39,6 @@ class Data:
     def __init__(self):
         self.data = []
 
-    def __init__(self, data):
-        self.data = list(data)
-
     def get_row(self, index):
         return self.data[index]
 
@@ -68,12 +61,12 @@ class SpreadSheet:
         self.column_count = sheet.max_column
         self.field_key = {}
         self.data = Data()
-        for index in range(FIRST_COLUMN_INDEX, self.column_count):
+        for index in range(FIRST_COLUMN_INDEX, self.column_count + 1):
             key = str(sheet.cell(SHEET_PARAM_NAME_ROW, index).value)
             self.field_key[index] = key
 
-        for i in range(SHEET_PARAM_NAME_ROW + 1, self.row_count):
-            row = Row()
+        for i in range(SHEET_PARAM_NAME_ROW + 1, self.row_count + 1):
+            row = Row(dict())
             for j in range(FIRST_COLUMN_INDEX, self.column_count):
                 value = str(sheet.cell(i, j).value)
                 row.set_value(self.field_key[j], value)

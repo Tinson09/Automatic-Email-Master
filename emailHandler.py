@@ -1,7 +1,7 @@
 import yagmail
 
 
-class Email:
+class EmailHandler:
     def __init__(self, email_id, password):
         try:
             self.mail = yagmail.SMTP(email_id, password)
@@ -17,7 +17,10 @@ class Email:
         return self.is_authenticated
 
     def send(self, receiver_mail, subject, draft):
-        assert (self.is_authenticated(), "Mail is not authenticated")
+        if not self.is_authenticated:
+            print("Failed to Authenticate")
+            self.failed_emails.append(receiver_mail)
+            return
         try:
             self.mail.send(receiver_mail, subject, draft)
             self.successful_emails.append(receiver_mail)
