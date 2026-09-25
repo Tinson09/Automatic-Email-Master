@@ -154,9 +154,26 @@
   .rung b{color:var(--navy)}
   .rung p{margin:2px 0 0;font-size:12.5px;color:var(--muted)}
 
+  /* One-section-at-a-time (wizard) */
+  .slide{display:none;border-top:none;padding-top:10px}
+  .slide.active{display:block;animation:slideIn .28s ease}
+  @keyframes slideIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .slidenav{position:sticky;bottom:0;z-index:5;display:flex;align-items:center;gap:14px;margin-top:26px;
+    padding:12px 16px;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);
+    border:1px solid var(--line);border-radius:14px;box-shadow:0 -4px 20px rgba(11,31,58,.08)}
+  .slidenav button{display:flex;align-items:center;gap:8px;background:var(--navy);color:#fff;border:none;
+    border-radius:10px;padding:11px 18px;font-size:14px;font-weight:600;cursor:pointer;transition:.15s}
+  .slidenav button:hover{background:var(--blue)}
+  .slidenav button:disabled{opacity:.35;cursor:not-allowed;background:var(--navy)}
+  .slidenav .next{background:var(--cyan);color:#04222a}
+  .slidenav .next:hover{background:#1fb3c6}
+  .slidenav .prog{flex:1;text-align:center;font-size:13px;color:var(--muted)}
+  .slidenav .prog b{color:var(--navy);display:block;font-size:14px}
+  .slidenav .prog .track{height:5px;background:#e7edf6;border-radius:5px;margin:7px auto 0;max-width:420px;overflow:hidden}
+  .slidenav .prog .fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));transition:width .3s}
   footer{color:var(--muted);font-size:12.5px;padding:34px 0 10px;border-top:1px solid var(--line);margin-top:20px}
   .pill{display:inline-block;background:#eef4ff;color:var(--blue);border:1px solid #d7e6ff;border-radius:20px;padding:2px 10px;font-size:11.5px;margin:2px}
-  .backtop{position:fixed;right:20px;bottom:20px;background:var(--navy);color:#fff;border:none;width:44px;height:44px;border-radius:50%;font-size:18px;cursor:pointer;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.2s}
+  .backtop{position:fixed;right:20px;bottom:92px;background:var(--navy);color:#fff;border:none;width:44px;height:44px;border-radius:50%;font-size:18px;cursor:pointer;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.2s}
   .backtop.show{opacity:1;pointer-events:auto}
 
   @media (max-width:920px){
@@ -214,7 +231,7 @@
 
   <!-- ============ MAIN ============ -->
   <main class="main">
-    <header class="hero">
+    <header class="hero" id="heroHeader">
       <span class="eyebrow">Amadeus Selling Platform · Cryptic entries</span>
       <h2>Your interactive Amadeus GDS interview cheat‑book</h2>
       <p class="lead">Every command, workflow and screenshot from the training notes — turned into searchable cards,
@@ -229,7 +246,7 @@
     </header>
 
     <!-- OVERVIEW -->
-    <section id="overview">
+    <section class="slide" id="overview">
       <h3><span class="num">0</span> Overview &amp; how to use</h3>
       <p class="intro">Amadeus is a <b>GDS (Global Distribution System)</b>. Travel agents talk to it with short
       <b>cryptic entries</b> — abbreviated commands typed into a green‑screen terminal. This guide groups those entries
@@ -248,14 +265,14 @@
     </section>
 
     <!-- GLOSSARY -->
-    <section id="glossary">
+    <section class="slide" id="glossary">
       <h3><span class="num">▤</span> Glossary — decode the jargon first</h3>
       <p class="intro">Get fluent with these before anything else; every later section leans on them.</p>
       <div class="grid g3" id="glossaryGrid"></div>
     </section>
 
     <!-- ENCODE / DECODE -->
-    <section id="encode">
+    <section class="slide" id="encode">
       <h3><span class="num">1</span> Encode &amp; Decode</h3>
       <p class="intro"><b>Encode</b> = turn a full name into a code (city → 3‑letter code). <b>Decode</b> = turn a code
       back into a name. This is the bread‑and‑butter of talking to the system.</p>
@@ -301,7 +318,7 @@ BLR C BANGALORE           <span class="muted">/IN INDIA</span>
     </section>
 
     <!-- TIME -->
-    <section id="time">
+    <section class="slide" id="time">
       <h3><span class="num">2</span> Time, time‑difference &amp; Zulu</h3>
       <p class="intro">Time entries all start with <span class="cmd">DD</span> ("Display Date/time"). They matter for
       connection planning and for reading schedules that are stored in <b>Zulu (UTC)</b> time.</p>
@@ -332,7 +349,7 @@ LON  IS  <span class="y">4</span>H<span class="y">30</span>  BEHIND  BLR
     </section>
 
     <!-- AVAILABILITY -->
-    <section id="avail">
+    <section class="slide" id="avail">
       <h3><span class="num">3</span> Availability &amp; schedules</h3>
       <p class="intro">Two verbs dominate: <span class="cmd">SN</span> (Schedule/Neutral — shows <b>all</b> RBDs whether
       open or not) and <span class="cmd">AN</span> (Availability Neutral — shows <b>only bookable</b> RBDs).</p>
@@ -382,7 +399,7 @@ LON  IS  <span class="y">4</span>H<span class="y">30</span>  BEHIND  BLR
     </section>
 
     <!-- RBD -->
-    <section id="rbd">
+    <section class="slide" id="rbd">
       <h3><span class="num">4</span> RBD &amp; cabin (booking) classes</h3>
       <p class="intro">An <b>RBD (Reservation Booking Designator)</b> is the single letter that sets the price/cabin of a
       seat. When searching you can filter to a whole cabin band with a <span class="cmd">/K…</span> modifier.</p>
@@ -401,7 +418,7 @@ LON  IS  <span class="y">4</span>H<span class="y">30</span>  BEHIND  BLR
     </section>
 
     <!-- PNR -->
-    <section id="pnr">
+    <section class="slide" id="pnr">
       <h3><span class="num">5</span> Creating a PNR (booking)</h3>
       <p class="intro">A <b>PNR (Passenger Name Record)</b> needs a set of <b>mandatory elements</b> before it can be saved.
       Remember them with the mnemonic <b>P‑N‑I‑T‑R‑E</b> (Phone, Name, Itinerary, Ticketing, Received‑from, End).</p>
@@ -449,7 +466,7 @@ LON  IS  <span class="y">4</span>H<span class="y">30</span>  BEHIND  BLR
     </section>
 
     <!-- SEATS -->
-    <section id="seats">
+    <section class="slide" id="seats">
       <h3><span class="num">6</span> Seats &amp; special service requests</h3>
       <div class="grid g2">
         <div class="card">
@@ -471,7 +488,7 @@ LON  IS  <span class="y">4</span>H<span class="y">30</span>  BEHIND  BLR
     </section>
 
     <!-- PRICING -->
-    <section id="pricing">
+    <section class="slide" id="pricing">
       <h3><span class="num">7</span> Pricing entries — the FX family</h3>
       <p class="intro">This is the heart of the interview. Every <span class="cmd">FX…</span> entry is defined by two
       choices: <b>which classes</b> (keep the <span class="t-cur tag">current</span> RBDs, or drop to the
@@ -524,7 +541,7 @@ LON  IS  <span class="y">4</span>H<span class="y">30</span>  BEHIND  BLR
     </section>
 
     <!-- FARE FAMILIES -->
-    <section id="families">
+    <section class="slide" id="families">
       <h3><span class="num">8</span> Fare families</h3>
       <p class="intro">Airlines bundle fares into named <b>families</b> (Classic, Flex, Business‑Saver…). Each family
       packages seats, bags, changes and refunds differently. The workflow: price with <span class="cmd">FXA</span>,
@@ -604,7 +621,7 @@ LON  IS  <span class="y">4</span>H<span class="y">30</span>  BEHIND  BLR
     </section>
 
     <!-- FILTERS -->
-    <section id="filters">
+    <section class="slide" id="filters">
       <h3><span class="num">9</span> Pricing filters &amp; fare conditions</h3>
       <p class="intro">Filters refine <i>any</i> pricing entry so you don't accidentally downgrade or overpay. Append them
       after the FX command.</p>
@@ -638,7 +655,7 @@ LON  IS  <span class="y">4</span>H<span class="y">30</span>  BEHIND  BLR
     </section>
 
     <!-- CURRENCY / FQD -->
-    <section id="currency">
+    <section class="slide" id="currency">
       <h3><span class="num">10</span> Currency, fare display &amp; FQP</h3>
       <div class="grid g2">
         <div class="card">
@@ -677,7 +694,7 @@ LON  IS  <span class="y">4</span>H<span class="y">30</span>  BEHIND  BLR
     </section>
 
     <!-- RTW -->
-    <section id="rtw">
+    <section class="slide" id="rtw">
       <h3><span class="num">11</span> Round‑the‑world (RTW) fares</h3>
       <p class="intro">Special multi‑continent fares priced as one journey. They validate against alliance rules and use
       a dedicated pricing modifier.</p>
@@ -709,7 +726,7 @@ LON  IS  <span class="y">4</span>H<span class="y">30</span>  BEHIND  BLR
     </section>
 
     <!-- ATC / REISSUE -->
-    <section id="atc">
+    <section class="slide" id="atc">
       <h3><span class="num">12</span> ATC — Automated Ticket Changes (reissue)</h3>
       <p class="intro"><b>ATC</b> reprices a <i>changed</i> itinerary and works out the fare difference + penalty. The four
       entries mirror the booking‑side FX family — same "current vs cheapest" and "creates elements vs informative" logic.</p>
@@ -755,7 +772,7 @@ LON  IS  <span class="y">4</span>H<span class="y">30</span>  BEHIND  BLR
     </section>
 
     <!-- TICKETING / EMD -->
-    <section id="ticketing">
+    <section class="slide" id="ticketing">
       <h3><span class="num">13</span> Ticketing, EMD &amp; carriers</h3>
       <div class="grid g2">
         <div class="card">
@@ -783,7 +800,7 @@ LON  IS  <span class="y">4</span>H<span class="y">30</span>  BEHIND  BLR
     </section>
 
     <!-- HOTELS -->
-    <section id="hotels">
+    <section class="slide" id="hotels">
       <h3><span class="num">14</span> Hotels — Amadeus Assistant</h3>
       <p class="intro">Hotel cryptic entries follow a family: <span class="cmd">HA</span> availability,
       <span class="cmd">HL</span> location, <span class="cmd">HS</span> sell, <span class="cmd">HI</span> inventory,
@@ -823,7 +840,7 @@ LON  IS  <span class="y">4</span>H<span class="y">30</span>  BEHIND  BLR
     </section>
 
     <!-- CARS -->
-    <section id="cars">
+    <section class="slide" id="cars">
       <h3><span class="num">15</span> Cars — Amadeus Assistant</h3>
       <p class="intro">Mirror of the hotel logic with <b>C</b>: <span class="cmd">CA</span> availability,
       <span class="cmd">CS</span> sell, <span class="cmd">CL</span> location, <span class="cmd">CR</span> policy/rules.</p>
@@ -859,7 +876,7 @@ LON  IS  <span class="y">4</span>H<span class="y">30</span>  BEHIND  BLR
     </section>
 
     <!-- COMMAND FINDER -->
-    <section id="reference">
+    <section class="slide" id="reference">
       <h3><span class="num">⌦</span> Command finder</h3>
       <p class="intro">Search all <span id="cmdCount">90+</span> entries from the notes. Type a command or a keyword
       (e.g. "cheapest", "seat", "hotel", "reissue").</p>
@@ -872,14 +889,14 @@ LON  IS  <span class="y">4</span>H<span class="y">30</span>  BEHIND  BLR
     </section>
 
     <!-- FLASHCARDS -->
-    <section id="flashcards">
+    <section class="slide" id="flashcards">
       <h3><span class="num">▢</span> Flashcards — click to flip</h3>
       <p class="intro">Cover the answer, read the command, say what it does — then flip to check.</p>
       <div class="cards" id="flashcards"></div>
     </section>
 
     <!-- QUIZ -->
-    <section id="quiz">
+    <section class="slide" id="quiz">
       <h3><span class="num">?</span> Practice quiz</h3>
       <p class="intro">Ten interview‑style questions drawn straight from the notes. Pick an answer to see the explanation.</p>
       <div class="quiz">
@@ -901,7 +918,17 @@ LON  IS  <span class="y">4</span>H<span class="y">30</span>  BEHIND  BLR
       </div>
     </section>
 
-    <footer>
+    <div class="slidenav" id="slideNav">
+      <button id="prevBtn">‹ Previous</button>
+      <div class="prog">
+        <b id="progLabel">Section 1 of 20</b>
+        <span id="progTitle">Overview</span>
+        <div class="track"><div class="fill" id="progFill" style="width:5%"></div></div>
+      </div>
+      <button class="next" id="nextBtn">Next ›</button>
+    </div>
+
+    <footer id="creditFooter">
       <p>Built from the "Training Notes" email for Amadeus interview preparation. All 7 attached screenshots are
       reproduced and annotated above. This is a study aid — always verify entries against the live Amadeus help pages
       (<span class="cmd">HE</span> + command) as behaviour varies by market and office (OID).</p>
@@ -1199,25 +1226,72 @@ el('qNext').onclick=()=>{
 };
 renderQuiz();
 
-/* ---------------- NAV: scroll spy + filter + back-to-top ---------------- */
+/* ---------------- WIZARD: one section at a time ---------------- */
 const navLinks=[...document.querySelectorAll('#nav a')];
-const secs=navLinks.map(a=>document.querySelector(a.getAttribute('href')));
-const obs=new IntersectionObserver(es=>{
-  es.forEach(e=>{ if(e.isIntersecting){
-    navLinks.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id));
-  }});
-},{rootMargin:'-20% 0px -70% 0px'});
-secs.forEach(s=>s&&obs.observe(s));
+const ids = navLinks.map(a=>a.getAttribute('href').slice(1));
+const slides = ids.map(id=>document.getElementById(id));
+const titleOf = a => [...a.childNodes].filter(n=>n.nodeType===3).map(n=>n.textContent).join('').trim();
+const titles = navLinks.map(titleOf);
+const total = slides.length;
+const hero = el('heroHeader');
+const credit = el('creditFooter');
+let cur = 0;
 
+function show(i, opts={}){
+  cur = Math.max(0, Math.min(total-1, i));
+  slides.forEach((s,idx)=>s.classList.toggle('active', idx===cur));
+  navLinks.forEach((a,idx)=>a.classList.toggle('active', idx===cur));
+  // hero only on the very first slide; credits only on the last
+  hero.style.display = ids[cur]==='overview' ? '' : 'none';
+  credit.style.display = cur===total-1 ? '' : 'none';
+  // progress + buttons
+  el('progLabel').textContent = `Section ${cur+1} of ${total}`;
+  el('progTitle').textContent = titles[cur];
+  el('progFill').style.width = ((cur+1)/total*100).toFixed(1)+'%';
+  el('prevBtn').disabled = cur===0;
+  const nb=el('nextBtn');
+  nb.disabled = cur===total-1;
+  nb.textContent = cur===total-1 ? 'Finish' : 'Next ›';
+  // reveal the active section from its top
+  if(!opts.noScroll) window.scrollTo({top:0, behavior:opts.instant?'auto':'smooth'});
+  if(location.hash!=='#'+ids[cur]) history.replaceState(null,'','#'+ids[cur]);
+}
+
+el('prevBtn').onclick=()=>show(cur-1);
+el('nextBtn').onclick=()=>{ if(cur<total-1) show(cur+1); };
+
+// Any in-page anchor (left nav + inline links) switches the slide
+document.addEventListener('click', e=>{
+  const a = e.target.closest('a[href^="#"]');
+  if(!a) return;
+  const id = a.getAttribute('href').slice(1);
+  const idx = ids.indexOf(id);
+  if(idx>-1){ e.preventDefault(); show(idx); }
+});
+
+// Keyboard: arrows / PageUp-Down navigate (ignore while typing in a field)
+document.addEventListener('keydown', e=>{
+  const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+  if(typing) return;
+  if(e.key==='ArrowRight'||e.key==='PageDown'){ e.preventDefault(); show(cur+1); }
+  else if(e.key==='ArrowLeft'||e.key==='PageUp'){ e.preventDefault(); show(cur-1); }
+});
+
+// Filter the left nav list
 el('navFilter').addEventListener('input',e=>{
   const q=e.target.value.toLowerCase();
   navLinks.forEach(a=>{ a.style.display = a.textContent.toLowerCase().includes(q)?'':'none'; });
   document.querySelectorAll('#nav .grp').forEach(g=>g.style.display=q?'none':'');
 });
 
+// Back-to-top helps within a tall section
 const bt=el('backtop');
 window.addEventListener('scroll',()=>bt.classList.toggle('show',window.scrollY>500));
 bt.onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
+
+// Deep-link support: open the slide named in the URL hash, else the first
+const start = ids.indexOf(location.hash.slice(1));
+show(start>-1?start:0, {instant:true, noScroll:true});
 </script>
 </body>
 </html>
