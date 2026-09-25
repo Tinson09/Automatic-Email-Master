@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Amadeus GDS — Interactive Interview Study Guide</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b1f3a'/%3E%3Ctext x='16' y='22' font-size='18' text-anchor='middle' fill='%2325c3d6' font-family='Arial' font-weight='bold'%3EA%3C/text%3E%3C/svg%3E" />
+<style>
+  :root{
+    --navy:#0b1f3a; --navy2:#12294d; --blue:#1e5bb8; --cyan:#25c3d6; --cyan2:#7fe3ef;
+    --ink:#16202e; --muted:#5b6b7f; --line:#e2e8f2; --bg:#f4f7fc; --card:#ffffff;
+    --green:#1a9e63; --amber:#e08a00; --red:#d1435b; --violet:#6c53c9;
+    --term-bg:#0b1330; --term-ink:#d9e4ff; --term-cyan:#66e0ff; --term-pink:#ff8ad1; --term-yellow:#ffd76a;
+    --shadow:0 6px 22px rgba(11,31,58,.10);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55}
+  a{color:var(--blue);text-decoration:none}
+  code,kbd,.mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace}
+
+  /* Layout */
+  .app{display:grid;grid-template-columns:288px 1fr;min-height:100vh}
+  .sidebar{position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;background:linear-gradient(180deg,var(--navy),var(--navy2));color:#dce7f7;padding:0 0 40px}
+  .brand{padding:22px 22px 14px;border-bottom:1px solid rgba(255,255,255,.08);position:sticky;top:0;background:linear-gradient(180deg,var(--navy),var(--navy2));z-index:2}
+  .brand h1{font-size:18px;margin:0 0 2px;letter-spacing:.5px}
+  .brand .sub{font-size:12px;color:var(--cyan2);letter-spacing:2px;text-transform:uppercase}
+  .navsearch{padding:14px 16px}
+  .navsearch input{width:100%;padding:10px 12px;border-radius:9px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:#fff;font-size:13px}
+  .navsearch input::placeholder{color:#9fb3d4}
+  nav a{display:flex;gap:10px;align-items:center;color:#c3d4ee;padding:9px 20px;font-size:13.5px;border-left:3px solid transparent}
+  nav a .ic{width:22px;text-align:center;opacity:.85}
+  nav a:hover{background:rgba(255,255,255,.05);color:#fff}
+  nav a.active{background:rgba(37,195,214,.14);border-left-color:var(--cyan);color:#fff}
+  nav .grp{font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:#6f89b3;padding:16px 20px 6px}
+
+  .main{max-width:1080px;margin:0 auto;padding:0 34px 120px;width:100%}
+  header.hero{padding:52px 0 26px}
+  .hero .eyebrow{display:inline-block;background:var(--cyan);color:#04222a;font-weight:700;font-size:11px;letter-spacing:2px;padding:5px 12px;border-radius:30px;text-transform:uppercase}
+  .hero h2{font-size:38px;line-height:1.12;margin:16px 0 8px}
+  .hero p.lead{font-size:17px;color:var(--muted);max-width:760px}
+  .hero .meta{display:flex;gap:22px;flex-wrap:wrap;margin-top:20px;font-size:13px;color:var(--muted)}
+  .hero .meta b{color:var(--ink)}
+
+  section{scroll-margin-top:18px;padding:30px 0;border-top:1px solid var(--line)}
+  section > h3{font-size:25px;margin:6px 0 4px;display:flex;align-items:center;gap:12px}
+  section > h3 .num{font-size:13px;background:var(--navy);color:#fff;width:30px;height:30px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto}
+  section > .intro{color:var(--muted);margin:2px 0 20px;max-width:820px}
+  h4{font-size:16.5px;margin:26px 0 10px;color:var(--navy)}
+  h5{font-size:14px;margin:18px 0 8px;color:var(--blue);text-transform:uppercase;letter-spacing:.6px}
+
+  /* Cards & grids */
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+  .card h4{margin-top:0}
+
+  /* Command chip */
+  .cmd{display:inline-block;background:var(--term-bg);color:var(--term-cyan);padding:2px 8px;border-radius:6px;font-size:13px;font-family:Consolas,monospace;border:1px solid #24407a}
+  .kbd{background:#eef2fa;border:1px solid #d5deee;border-bottom-width:2px;border-radius:6px;padding:1px 7px;font-size:12.5px}
+  .var{color:var(--term-yellow)}
+
+  /* Command reference list (searchable) */
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 18px}
+  .chip{border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:30px;padding:6px 14px;font-size:12.5px;cursor:pointer;user-select:none}
+  .chip.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .cmdlist{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .cmdrow{background:#fff;border:1px solid var(--line);border-radius:11px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start}
+  .cmdrow .c{font-family:Consolas,monospace;color:var(--blue);font-weight:700;font-size:13.5px;white-space:nowrap;background:#eef4ff;border:1px solid #d7e6ff;border-radius:6px;padding:3px 8px;flex:0 0 auto;max-width:44%;overflow-wrap:anywhere;white-space:normal}
+  .cmdrow .d{font-size:13px;color:#33465e}
+  .cmdrow small{color:#93a1b5;text-transform:uppercase;letter-spacing:.5px;font-size:10px;display:block;margin-top:3px}
+  .nohits{color:var(--muted);padding:14px;display:none}
+
+  /* Terminal block */
+  .term{background:var(--term-bg);color:var(--term-ink);border-radius:12px;padding:16px 18px;font-family:Consolas,monospace;font-size:13px;overflow-x:auto;border:1px solid #21386e;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
+  .term .p{color:var(--term-cyan)}
+  .term .y{color:var(--term-yellow)}
+  .term .k{color:var(--term-pink)}
+  .term .g{color:#7ee0a6}
+  .term .muted{color:#7f92c4}
+
+  /* Tables */
+  table.tbl{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);font-size:13.5px}
+  table.tbl th{background:var(--navy);color:#fff;text-align:left;padding:11px 13px;font-weight:600;font-size:12.5px}
+  table.tbl td{padding:11px 13px;border-top:1px solid var(--line);vertical-align:top}
+  table.tbl tr:nth-child(even) td{background:#fafcff}
+  .tag{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11.5px;font-weight:700}
+  .t-yes{background:#e2f6ec;color:var(--green)} .t-no{background:#fdeaee;color:var(--red)}
+  .t-cur{background:#e8effb;color:var(--blue)} .t-chp{background:#efeafb;color:var(--violet)}
+  .t-info{background:#fff2df;color:var(--amber)}
+
+  /* Callout */
+  .note{border-left:4px solid var(--cyan);background:#effbfd;padding:12px 16px;border-radius:0 10px 10px 0;margin:14px 0;font-size:13.5px}
+  .warn{border-left:4px solid var(--amber);background:#fff7ea}
+  .danger{border-left:4px solid var(--red);background:#fdeef1}
+  .tip{border-left:4px solid var(--green);background:#eefaf2}
+  .note b{color:var(--navy)}
+
+  /* Screenshot figure */
+  figure{margin:16px 0;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+  figure img{display:block;width:100%;background:#e9eefc}
+  figure figcaption{padding:12px 16px;font-size:13px;color:var(--muted);border-top:1px solid var(--line)}
+  figure figcaption b{color:var(--navy)}
+
+  /* Flow diagram */
+  .flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:8px 0}
+  .step{flex:1;min-width:150px;background:#fff;border:1px solid var(--line);border-top:4px solid var(--blue);border-radius:12px;padding:14px;position:relative;box-shadow:var(--shadow);margin:6px}
+  .step .n{position:absolute;top:-12px;left:14px;background:var(--blue);color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+  .step h5{margin:6px 0 6px;color:var(--navy)}
+  .step p{margin:0;font-size:12.5px;color:var(--muted)}
+
+  /* Quiz */
+  .quiz{background:linear-gradient(135deg,var(--navy),#14356b);border-radius:16px;padding:24px;color:#eaf1fb}
+  .qbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+  .qbar .score{background:rgba(255,255,255,.12);padding:6px 14px;border-radius:30px;font-size:13px}
+  .qcard{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:18px}
+  .qq{font-size:16px;margin-bottom:14px}
+  .qopts{display:grid;gap:9px}
+  .qopt{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.16);border-radius:9px;padding:11px 14px;cursor:pointer;font-size:13.5px;color:#eaf1fb;text-align:left;transition:.15s}
+  .qopt:hover{background:rgba(255,255,255,.12)}
+  .qopt.correct{background:rgba(26,158,99,.35);border-color:#2fd68c}
+  .qopt.wrong{background:rgba(209,67,91,.32);border-color:#ff6f88}
+  .qexpl{margin-top:12px;font-size:13px;color:#cfe0f7;display:none}
+  .qexpl.show{display:block}
+  .qnav{display:flex;gap:10px;margin-top:16px}
+  .btn{background:var(--cyan);color:#04222a;border:none;border-radius:9px;padding:10px 18px;font-weight:700;cursor:pointer;font-size:13.5px}
+  .btn.ghost{background:transparent;color:#eaf1fb;border:1px solid rgba(255,255,255,.25)}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+
+  /* Flashcards */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .fc{perspective:1000px;height:130px}
+  .fc-in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d;cursor:pointer}
+  .fc.flip .fc-in{transform:rotateY(180deg)}
+  .fc-f,.fc-b{position:absolute;inset:0;backface-visibility:hidden;border-radius:12px;display:flex;align-items:center;justify-content:center;text-align:center;padding:14px;box-shadow:var(--shadow)}
+  .fc-f{background:var(--term-bg);color:var(--term-cyan);font-family:Consolas,monospace;font-size:16px;border:1px solid #24407a}
+  .fc-b{background:#fff;color:var(--ink);transform:rotateY(180deg);border:1px solid var(--line);font-size:13px}
+
+  /* Bar chart */
+  .bar{display:grid;grid-template-columns:190px 1fr 74px;align-items:center;gap:10px;margin:7px 0;font-size:12.5px}
+  .bar .lbl{font-family:Consolas,monospace;color:var(--navy);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .bar .track{display:block;background:#eef2f8;border-radius:6px;height:20px;overflow:hidden}
+  .bar .fill{display:block;height:100%;min-width:2px;border-radius:6px;background:linear-gradient(90deg,var(--blue),var(--cyan))}
+  .bar .val{text-align:right;font-family:Consolas,monospace;color:var(--muted)}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:6px 0 12px}
+  .dot{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+
+  /* Cabin ladder */
+  .ladder{display:flex;flex-direction:column;gap:8px}
+  .rung{display:grid;grid-template-columns:70px 1fr;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow)}
+  .rung .code{font-family:Consolas,monospace;font-weight:700;color:#fff;border-radius:8px;padding:8px;text-align:center}
+  .rung b{color:var(--navy)}
+  .rung p{margin:2px 0 0;font-size:12.5px;color:var(--muted)}
+
+  footer{color:var(--muted);font-size:12.5px;padding:34px 0 10px;border-top:1px solid var(--line);margin-top:20px}
+  .pill{display:inline-block;background:#eef4ff;color:var(--blue);border:1px solid #d7e6ff;border-radius:20px;padding:2px 10px;font-size:11.5px;margin:2px}
+  .backtop{position:fixed;right:20px;bottom:20px;background:var(--navy);color:#fff;border:none;width:44px;height:44px;border-radius:50%;font-size:18px;cursor:pointer;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.2s}
+  .backtop.show{opacity:1;pointer-events:auto}
+
+  @media (max-width:920px){
+    .app{grid-template-columns:1fr}
+    .sidebar{position:static;height:auto}
+    .cmdlist,.g2,.g3,.g4,.cards{grid-template-columns:1fr}
+    .hero h2{font-size:30px}
+  }
+  @media print{
+    .sidebar,.backtop,.navsearch,.filters{display:none}
+    .app{grid-template-columns:1fr}
+    section{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="brand">
+      <h1>amadeus<span style="color:var(--cyan)"> · </span>prep</h1>
+      <div class="sub">Interview Study Guide</div>
+    </div>
+    <div class="navsearch">
+      <input id="navFilter" type="text" placeholder="Filter sections…" aria-label="Filter sections" />
+    </div>
+    <nav id="nav">
+      <div class="grp">Getting started</div>
+      <a href="#overview"><span class="ic">◎</span> Overview &amp; how to use</a>
+      <a href="#glossary"><span class="ic">▤</span> Glossary of terms</a>
+      <div class="grp">Core skills</div>
+      <a href="#encode"><span class="ic">⇄</span> Encode &amp; Decode</a>
+      <a href="#time"><span class="ic">◷</span> Time &amp; Zulu</a>
+      <a href="#avail"><span class="ic">▦</span> Availability &amp; Schedules</a>
+      <a href="#rbd"><span class="ic">✦</span> RBD / Booking classes</a>
+      <a href="#pnr"><span class="ic">⌘</span> Creating a PNR</a>
+      <a href="#seats"><span class="ic">▥</span> Seats &amp; SSR</a>
+      <div class="grp">Fares &amp; ticketing</div>
+      <a href="#pricing"><span class="ic">$</span> Pricing entries</a>
+      <a href="#families"><span class="ic">☰</span> Fare families</a>
+      <a href="#filters"><span class="ic">⛃</span> Pricing filters</a>
+      <a href="#currency"><span class="ic">₹</span> Currency &amp; FQD</a>
+      <a href="#rtw"><span class="ic">◍</span> Round the world</a>
+      <a href="#atc"><span class="ic">↺</span> ATC / Reissue</a>
+      <a href="#ticketing"><span class="ic">✈</span> Ticketing &amp; EMD</a>
+      <div class="grp">Ancillaries</div>
+      <a href="#hotels"><span class="ic">⌂</span> Hotels</a>
+      <a href="#cars"><span class="ic">⛝</span> Cars</a>
+      <div class="grp">Prep tools</div>
+      <a href="#reference"><span class="ic">⌦</span> Command finder</a>
+      <a href="#flashcards"><span class="ic">▢</span> Flashcards</a>
+      <a href="#quiz"><span class="ic">?</span> Practice quiz</a>
+    </nav>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main">
+    <header class="hero">
+      <span class="eyebrow">Amadeus Selling Platform · Cryptic entries</span>
+      <h2>Your interactive Amadeus GDS interview cheat‑book</h2>
+      <p class="lead">Every command, workflow and screenshot from the training notes — turned into searchable cards,
+      decision matrices, annotated terminal captures, charts and a self‑test quiz. Built to help you walk into the
+      Amadeus interview knowing exactly <i>what to type, why, and what you'll see back</i>.</p>
+      <div class="meta">
+        <div>📌 <b>90+</b> cryptic commands</div>
+        <div>🖼️ <b>7</b> annotated real screens</div>
+        <div>📊 <b>Charts</b> &amp; decision tables</div>
+        <div>🧠 <b>Quiz</b> + flashcards</div>
+      </div>
+    </header>
+
+    <!-- OVERVIEW -->
+    <section id="overview">
+      <h3><span class="num">0</span> Overview &amp; how to use</h3>
+      <p class="intro">Amadeus is a <b>GDS (Global Distribution System)</b>. Travel agents talk to it with short
+      <b>cryptic entries</b> — abbreviated commands typed into a green‑screen terminal. This guide groups those entries
+      into the natural order of a booking: <b>find → sell → book → price → ticket → service</b>.</p>
+      <div class="grid g3">
+        <div class="card"><h4>🟦 The command chip</h4><p>Anything shown as <span class="cmd">DAN&nbsp;BLR</span> is typed exactly as‑is.
+        Parts in <span class="var">yellow</span> are values you replace, e.g. <span class="cmd">DD<span class="var">BLR</span></span>.</p></div>
+        <div class="card"><h4>🖥️ The terminal block</h4><p>Dark boxes reproduce what the screen returns, so you recognise the
+        real output (fare bases, <span class="mono" style="color:var(--red)">*RB</span> flags, TST images…).</p></div>
+        <div class="card"><h4>🔎 The finder</h4><p>Jump to <a href="#reference">Command finder</a> to search all entries by
+        keyword or category, then test yourself with the <a href="#quiz">quiz</a>.</p></div>
+      </div>
+      <div class="note tip"><b>Interview tip:</b> examiners love the <i>"what does this do and when would you use it"</i>
+      framing. For every pricing entry, be ready to say two things: <b>which classes</b> it uses (current vs cheapest) and
+      <b>whether it creates a TST</b>. That single distinction is covered in the <a href="#pricing">Pricing</a> matrix.</p>
+    </section>
+
+    <!-- GLOSSARY -->
+    <section id="glossary">
+      <h3><span class="num">▤</span> Glossary — decode the jargon first</h3>
+      <p class="intro">Get fluent with these before anything else; every later section leans on them.</p>
+      <div class="grid g3" id="glossaryGrid"></div>
+    </section>
+
+    <!-- ENCODE / DECODE -->
+    <section id="encode">
+      <h3><span class="num">1</span> Encode &amp; Decode</h3>
+      <p class="intro"><b>Encode</b> = turn a full name into a code (city → 3‑letter code). <b>Decode</b> = turn a code
+      back into a name. This is the bread‑and‑butter of talking to the system.</p>
+
+      <div class="grid g2">
+        <div class="card">
+          <h5>Cities &amp; airports</h5>
+          <table class="tbl">
+            <tr><th>Entry</th><th>Meaning</th></tr>
+            <tr><td><span class="cmd">DAN <span class="var">BANGALORE</span></span></td><td><b>D</b>ecode <b>A</b>irport/city by <b>N</b>ame → gives the code</td></tr>
+            <tr><td><span class="cmd">DAC <span class="var">BLR</span></span></td><td><b>D</b>ecode <b>A</b>irport <b>C</b>ode → gives the city name</td></tr>
+            <tr><td><span class="cmd">DAC<span class="var">BLR</span>/N</span></td><td>Add <span class="cmd">/N</span> → nearest airports to that city</td></tr>
+            <tr><td><span class="cmd">DNA<span class="var">6E</span></span></td><td><b>D</b>ecode airli<b>N</b>e <b>A</b>irline code (6E = IndiGo)</td></tr>
+            <tr><td><span class="cmd">DNE<span class="var">777</span></span></td><td><b>D</b>ecode <b>N</b> <b>E</b>quipment type (aircraft)</td></tr>
+          </table>
+        </div>
+        <div class="card">
+          <h5>Countries, states &amp; help</h5>
+          <table class="tbl">
+            <tr><th>Entry</th><th>Meaning</th></tr>
+            <tr><td><span class="cmd">DC <span class="var">SENEGAL</span></span></td><td><b>D</b>ecode <b>C</b>ountry → 2‑letter country code</td></tr>
+            <tr><td><span class="cmd">GG COU <span class="var">IN</span></span></td><td>Capital + attractions, quick facts &amp; holidays for a country (ISO code)</td></tr>
+            <tr><td><span class="cmd">DNS <span class="var">ABCD</span></span></td><td><b>D</b>ecode <b>N</b>ame of <b>S</b>tate (4‑letter code)</td></tr>
+            <tr><td><span class="cmd">DNS<span class="var">US</span></span></td><td>2‑letter country code → lists how many state cities exist</td></tr>
+            <tr><td><span class="cmd">GG APT <span class="var">BLR</span></span></td><td>How many <b>terminals</b> an airport has</td></tr>
+            <tr><td><span class="cmd">HEDD</span></td><td><b>HE</b>lp page for the <b>DD</b> entry (append any command to <span class="cmd">HE</span>)</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="note"><b>Amadeus "states" countries:</b> only these have state‑level decoding —
+      <span class="pill">USA</span><span class="pill">Canada</span><span class="pill">Argentina</span><span class="pill">India</span><span class="pill">Australia</span>. A classic trivia question!</div>
+
+      <h4>What you'll type vs what comes back</h4>
+      <div class="term">
+<span class="p">&gt; DAN BANGALORE</span>
+A:APT<span class="muted">  YR</span> BLR<span class="k">*</span>KEMPEGOWDA INTL     /IN:INDIA
+<span class="p">&gt; DAC BLR</span>
+BLR C BANGALORE           <span class="muted">/IN INDIA</span>
+<span class="p">&gt; DNA 6E</span>
+6E/IGO 02640  INDIGO      <span class="muted">/IN INDIA</span>
+      </div>
+    </section>
+
+    <!-- TIME -->
+    <section id="time">
+      <h3><span class="num">2</span> Time, time‑difference &amp; Zulu</h3>
+      <p class="intro">Time entries all start with <span class="cmd">DD</span> ("Display Date/time"). They matter for
+      connection planning and for reading schedules that are stored in <b>Zulu (UTC)</b> time.</p>
+      <div class="grid g2">
+        <div class="card">
+          <table class="tbl">
+            <tr><th>Entry</th><th>Purpose</th></tr>
+            <tr><td><span class="cmd">DD<span class="var">BLR</span></span></td><td>Current local time at a city</td></tr>
+            <tr><td><span class="cmd">DD <span class="var">LON</span>/<span class="var">BLR</span></span></td><td>Time <b>difference</b> between two cities</td></tr>
+            <tr><td><span class="cmd">DD <span class="var">LHR</span> <span class="var">1800</span>/<span class="var">BLR</span></span></td><td>What time it is in BLR when it's 18:00 in LHR</td></tr>
+            <tr><td><span class="cmd">DDZZZ<span class="var">1800</span>/<span class="var">LHR</span></span></td><td>Convert a <b>Zulu/UTC</b> time to local at an airport</td></tr>
+            <tr><td><span class="cmd">HEDD</span></td><td>Help for all the DD variants</td></tr>
+          </table>
+        </div>
+        <div class="card">
+          <h5>Why "Zulu"?</h5>
+          <p style="font-size:13.5px;color:#33465e">Airlines store every departure/arrival in <b>UTC</b>, nicknamed
+          <b>Zulu (Z)</b>, so times are unambiguous worldwide. The agent converts to the traveller's local time.
+          <span class="cmd">DDZZZ</span> is literally "<b>DD</b> the <b>ZZZ</b>ulu time".</p>
+          <div class="term">
+<span class="p">&gt; DD LON/BLR</span>
+LON  IS  <span class="y">4</span>H<span class="y">30</span>  BEHIND  BLR
+<span class="p">&gt; DDZZZ1200/BLR</span>
+1200Z  =  <span class="y">1730</span>  LOCAL  BLR
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AVAILABILITY -->
+    <section id="avail">
+      <h3><span class="num">3</span> Availability &amp; schedules</h3>
+      <p class="intro">Two verbs dominate: <span class="cmd">SN</span> (Schedule/Neutral — shows <b>all</b> RBDs whether
+      open or not) and <span class="cmd">AN</span> (Availability Neutral — shows <b>only bookable</b> RBDs).</p>
+
+      <div class="grid g2">
+        <div class="card" style="border-top:4px solid var(--blue)">
+          <h4>SN — see everything</h4>
+          <p style="font-size:13px;color:#33465e"><span class="cmd">SN</span> lists <b>every RBD</b> on a flight, even sold‑out
+          ones. Great for understanding the cabin structure.</p>
+          <div class="term"><span class="p">&gt; SN27APRBLRBOM1100</span>
+<span class="muted">27APR BLR→BOM, from 11:00, all classes</span></div>
+        </div>
+        <div class="card" style="border-top:4px solid var(--cyan)">
+          <h4>AN — see what's sellable</h4>
+          <p style="font-size:13px;color:#33465e"><span class="cmd">AN</span> lists <b>only available</b> RBDs — the ones
+          you can actually sell right now.</p>
+          <div class="term"><span class="p">&gt; AN27APRBLRBOM1100</span>
+<span class="muted">Same query, available RBDs only</span></div>
+        </div>
+      </div>
+
+      <h4>Anatomy of an availability entry</h4>
+      <div class="term" style="font-size:14px">
+<span class="p">SN</span> <span class="y">20DEC</span> <span class="k">BLR</span><span class="k">ROM</span> <span class="g">/XDXB,CDG</span>
+<span class="muted">│  │      │        └─ modifiers (transit, RBD, airline…)</span>
+<span class="muted">│  │      └────────── origin + destination city codes</span>
+<span class="muted">│  └───────────────── travel date</span>
+<span class="muted">└──────────────────── SN = all classes · AN = available only</span>
+      </div>
+
+      <h4>Modifiers you can bolt on</h4>
+      <table class="tbl">
+        <tr><th>Modifier</th><th>Example</th><th>What it does</th></tr>
+        <tr><td>Specific time</td><td><span class="cmd">SN27APRBLRBOM<span class="var">1100</span></span></td><td>Search from a departure time</td></tr>
+        <tr><td>Cabin band</td><td><span class="cmd">…/<span class="var">KF</span></span></td><td>Filter to a cabin (see next section)</td></tr>
+        <tr><td>Single RBD</td><td><span class="cmd">…/C<span class="var">Y</span></span></td><td>Show one specific booking class</td></tr>
+        <tr><td>Add transit</td><td><span class="cmd">…/X<span class="var">DXB,CDG</span></span></td><td><b>Force</b> connections via those points</td></tr>
+        <tr><td>Remove transit</td><td><span class="cmd">…/X-<span class="var">DXB,CDG</span></span></td><td><b>Exclude</b> those connecting points</td></tr>
+        <tr><td>Air segments only</td><td><span class="cmd">…/A<span class="var">LH</span>/MA</span></td><td><b>A</b> = air; keep flights (drop trains/buses)</td></tr>
+        <tr><td>Filter airlines</td><td><span class="cmd">…/A<span class="var">LH1881,SQ508</span></span></td><td>Only chosen carriers / flight numbers</td></tr>
+        <tr><td>Return schedule</td><td><span class="cmd">SCR<span class="var">05JAN</span></span></td><td>Schedule for the <b>return</b> journey</td></tr>
+        <tr><td>Previous result</td><td><span class="cmd">MPSN</span> / <span class="cmd">MPAN</span></td><td><b>M</b>ove to <b>P</b>revious availability display</td></tr>
+      </table>
+      <div class="note warn"><b>TR — Traffic Rights:</b> a <span class="cmd">TR</span> note on a segment means <i>traffic
+      rules apply</i> — that flight can only be sold in combination with an international sector. Watch for it on
+      domestic legs of an international itinerary.</div>
+    </section>
+
+    <!-- RBD -->
+    <section id="rbd">
+      <h3><span class="num">4</span> RBD &amp; cabin (booking) classes</h3>
+      <p class="intro">An <b>RBD (Reservation Booking Designator)</b> is the single letter that sets the price/cabin of a
+      seat. When searching you can filter to a whole cabin band with a <span class="cmd">/K…</span> modifier.</p>
+
+      <div class="ladder">
+        <div class="rung"><div class="code" style="background:#6c53c9">/KF</div><div><b>First class</b><p>The premium cabin. <span class="cmd">SN02DECBLRLON/KF</span></p></div></div>
+        <div class="rung"><div class="code" style="background:#1e5bb8">/KC</div><div><b>Business class</b><p><span class="cmd">SN02DECBLRLON/KC</span></p></div></div>
+        <div class="rung"><div class="code" style="background:#25c3d6">/KW</div><div><b>Premium economy — without economy</b><p>Pure premium‑eco display. <span class="cmd">SN02DECBLRLON/KW</span></p></div></div>
+        <div class="rung"><div class="code" style="background:#1a9e63">/KY</div><div><b>Economy including premium economy</b><p><span class="cmd">SN02DECBLRLON/KY</span></p></div></div>
+        <div class="rung"><div class="code" style="background:#7f8ba0">/KM</div><div><b>Economy — without premium economy</b><p>Plain economy only.</p></div></div>
+      </div>
+
+      <div class="note tip"><b>Memory hook —</b> the letters climb down the cabin: <b>F</b>irst → business (<b>C</b>) →
+      premium (<b>W</b>) → economy‑with‑premium (<b>Y</b>) → economy‑only (<b>M</b>). Also useful:
+      <span class="cmd">…/C<span class="var">RBD</span></span> shows a single specific booking class.</div>
+    </section>
+
+    <!-- PNR -->
+    <section id="pnr">
+      <h3><span class="num">5</span> Creating a PNR (booking)</h3>
+      <p class="intro">A <b>PNR (Passenger Name Record)</b> needs a set of <b>mandatory elements</b> before it can be saved.
+      Remember them with the mnemonic <b>P‑N‑I‑T‑R‑E</b> (Phone, Name, Itinerary, Ticketing, Received‑from, End).</p>
+
+      <div class="flow">
+        <div class="step"><span class="n">1</span><h5>Phone — <span class="cmd">AP</span></h5><p>Contact phone field. <span class="cmd">AP<span class="var">BLR 9876…</span></span></p></div>
+        <div class="step"><span class="n">2</span><h5>Name — <span class="cmd">NM</span></h5><p><span class="cmd">NM1<span class="var">SURNAME/NAME</span></span></p></div>
+        <div class="step"><span class="n">3</span><h5>Itinerary</h5><p>Sell segments from availability (e.g. <span class="cmd">SS1<span class="var">Y1</span></span>)</p></div>
+        <div class="step"><span class="n">4</span><h5>Ticketing — <span class="cmd">TKOK</span></h5><p>Ticketing time‑limit element</p></div>
+        <div class="step"><span class="n">5</span><h5>Received — <span class="cmd">RF</span></h5><p><span class="cmd">RF <span class="var">NAME</span></span> · <i>optional, depends on the OID</i></p></div>
+        <div class="step"><span class="n">6</span><h5>End — <span class="cmd">ER</span></h5><p><b>E</b>nd &amp; <b>R</b>etrieve — saves the file</p></div>
+      </div>
+
+      <div class="grid g2">
+        <div class="card">
+          <h5>Selling seats from availability</h5>
+          <table class="tbl">
+            <tr><th>Entry</th><th>Meaning</th></tr>
+            <tr><td><span class="cmd">SS1<span class="var">Y1</span></span></td><td>Sell 1 seat in class Y from line 1</td></tr>
+            <tr><td><span class="cmd">SS1<span class="var">I</span>O1</span></td><td>Sell in two <b>different RBDs</b> (e.g. I then O) on line 1</td></tr>
+            <tr><td><span class="cmd">SB<span class="var">Y</span>1/2</span></td><td><b>Forced change</b> of RBD on segments 1&amp;2 to class Y</td></tr>
+            <tr><td><span class="cmd"><span class="var">2</span>/HK</span></td><td>Change status of segment 2 to <b>HK</b> (confirmed)</td></tr>
+          </table>
+        </div>
+        <div class="card">
+          <h5>Remarks &amp; retrieval</h5>
+          <table class="tbl">
+            <tr><th>Entry</th><th>Meaning</th></tr>
+            <tr><td><span class="cmd">RTRN</span></td><td>Display the <b>RM</b> (remarks) of the PNR</td></tr>
+            <tr><td><span class="cmd">RM <span class="var">TEXT</span></span></td><td>Add a general remark</td></tr>
+          </table>
+          <div class="note"><b>OID</b> = Office ID. Whether <span class="cmd">RF</span> is mandatory depends on your
+          office's configuration.</div>
+        </div>
+      </div>
+
+      <h4>Minimum Connection Time (MCT)</h4>
+      <p class="intro">Before trusting a connection, verify the airport's <b>MCT</b> — the least time needed to transfer.</p>
+      <table class="tbl">
+        <tr><th>Entry</th><th>Meaning</th></tr>
+        <tr><td><span class="cmd">DMI</span></td><td>Display MCT <b>I</b>nformation for the itinerary</td></tr>
+        <tr><td><span class="cmd">DM</span></td><td>Display MCT for the whole booking</td></tr>
+        <tr><td><span class="cmd">DM<span class="var">2/3</span></span></td><td>Check MCT specifically <b>between segments 2 and 3</b></td></tr>
+      </table>
+    </section>
+
+    <!-- SEATS -->
+    <section id="seats">
+      <h3><span class="num">6</span> Seats &amp; special service requests</h3>
+      <div class="grid g2">
+        <div class="card">
+          <h5>Request a seat (SSR)</h5>
+          <table class="tbl">
+            <tr><th>Entry</th><th>Meaning</th></tr>
+            <tr><td><span class="cmd">ST/NSSA</span></td><td>Request an <b>aisle</b> seat (No‑Smoking Seat Aisle)</td></tr>
+            <tr><td><span class="cmd">ST/NSSW</span></td><td>Request a <b>window</b> seat</td></tr>
+            <tr><td><span class="cmd">RTSTR</span></td><td><b>R</b>e<b>t</b>rieve the <b>S</b>ea<b>t</b> map / seat data</td></tr>
+          </table>
+        </div>
+        <div class="card">
+          <h5>Reading the mnemonic</h5>
+          <p style="font-size:13.5px;color:#33465e"><span class="cmd">ST</span> = seat, <span class="cmd">NSS</span> =
+          No‑Smoking Seat, final letter = <b>A</b>isle or <b>W</b>indow. Handy for the classic "how do you request a
+          window seat?" question.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="pricing">
+      <h3><span class="num">7</span> Pricing entries — the FX family</h3>
+      <p class="intro">This is the heart of the interview. Every <span class="cmd">FX…</span> entry is defined by two
+      choices: <b>which classes</b> (keep the <span class="t-cur tag">current</span> RBDs, or drop to the
+      <span class="t-chp tag">cheapest</span>) and <b>whether it creates a TST</b> (an active priced record vs an
+      <span class="t-info tag">informative</span> quote).</p>
+
+      <table class="tbl">
+        <tr><th>Entry</th><th>Classes used</th><th>Creates TST?</th><th>Nature</th><th>Watch out</th></tr>
+        <tr><td><span class="cmd">FXP</span></td><td><span class="tag t-cur">Current</span></td><td><span class="tag t-yes">Yes</span></td><td>Active price</td><td>Ignores cheaper options; may show <span style="color:var(--red)">*RB</span></td></tr>
+        <tr><td><span class="cmd">FXX</span></td><td><span class="tag t-cur">Current</span></td><td><span class="tag t-no">No</span></td><td><span class="tag t-info">Informative</span></td><td>Same as FXP but quote only</td></tr>
+        <tr><td><span class="cmd">FXB</span></td><td><span class="tag t-chp">Cheapest</span></td><td><span class="tag t-yes">Yes</span></td><td>Active price</td><td>May <b>downgrade</b> pax — use with filters</td></tr>
+        <tr><td><span class="cmd">FXR</span></td><td><span class="tag t-chp">Cheapest</span></td><td><span class="tag t-no">No</span></td><td><span class="tag t-info">Informative</span></td><td>Cheapest quote only; may downgrade</td></tr>
+        <tr><td><span class="cmd">FXA</span></td><td>Lowest <b>+ list</b></td><td>Yes (via FXU)</td><td>Priced list</td><td>Shows a menu; pick a line then create TST</td></tr>
+      </table>
+
+      <div class="grid g2" style="margin-top:16px">
+        <div class="card">
+          <h5>Working an FXA list</h5>
+          <table class="tbl">
+            <tr><th>Entry</th><th>Meaning</th></tr>
+            <tr><td><span class="cmd">FXT<span class="var">1</span></span></td><td>When no <span style="color:var(--red)">*RB</span> in the list, choose a priced option (line 1)</td></tr>
+            <tr><td><span class="cmd">FXU<span class="var">1</span></span></td><td>Book/select line 1 → <b>creates the TST</b></td></tr>
+            <tr><td><span class="cmd">FXY</span></td><td>Show more fare combinations / upsell from the offered fare</td></tr>
+            <tr><td><span class="cmd">MP<span class="var">FXA</span></span></td><td><b>M</b>ove to <b>P</b>revious entry (MPFXA, MPFXB…)</td></tr>
+            <tr><td><span class="cmd">TTE/ALL</span></td><td>Delete <b>all</b> TSTs</td></tr>
+            <tr><td><span class="cmd">FQN<span class="var">1</span>*PE</span></td><td>Fare <b>rules</b> after pricing (transaction 1, penalties)</td></tr>
+          </table>
+        </div>
+        <div class="card">
+          <h5>The <span style="color:var(--red)">*RB</span> flag</h5>
+          <p style="font-size:13.5px;color:#33465e">In a price list, <span class="mono" style="color:var(--red)">*RB</span>
+          marks lines that <b>cannot be actively priced</b> right now (no seats in that fare). If your list has no
+          <span class="mono" style="color:var(--red)">*RB</span>, you can safely pick a line with <span class="cmd">FXT1</span>.</p>
+          <div class="note danger"><b>FXB / FXR danger:</b> "cheapest" can silently move the passenger to a lower cabin.
+          Always pair them with filters (cabin, flexibility) — the examiner will want to hear this caution.</div>
+        </div>
+      </div>
+
+      <h4>📊 Real FXP output — reading the fare list</h4>
+      <figure>
+        <img src="assets/image001.png" alt="FXP pricing output showing fare basis lines and *RB flags" />
+        <figcaption><b>Screen: <span class="cmd">FXP</span></b> — five priced lines (01–05) with their <b>fare basis</b>
+        (JRTIN7+JR…), passenger type <b>P1</b>, and <b>FARE&lt;EUR&gt;</b>. Every line carries <span style="color:var(--red)">*RB</span>
+        (needs re‑book) and stock restriction <span class="mono">1‑5</span>. Bottom shows the fare family
+        <b>BSFLXPLUS</b> and the hint to enter <span class="cmd">FQFn</span> for details or <span class="cmd">FXY</span> to upsell.</figcaption>
+      </figure>
+
+      <h5>The five priced options, charted (EUR)</h5>
+      <div id="fxpChart"></div>
+    </section>
+
+    <!-- FARE FAMILIES -->
+    <section id="families">
+      <h3><span class="num">8</span> Fare families</h3>
+      <p class="intro">Airlines bundle fares into named <b>families</b> (Classic, Flex, Business‑Saver…). Each family
+      packages seats, bags, changes and refunds differently. The workflow: price with <span class="cmd">FXA</span>,
+      read the family names, drill in with <span class="cmd">FQF</span>, then book with <span class="cmd">FXU</span>.</p>
+
+      <div class="flow">
+        <div class="step"><span class="n">1</span><h5>Price — <span class="cmd">FXA</span></h5><p>Use FXA so you get the list <i>and</i> the family names (Classic, Flex…)</p></div>
+        <div class="step"><span class="n">2</span><h5>Details — <span class="cmd">FQF<span class="var">11</span></span></h5><p>Browse what's included in a family (line 11)</p></div>
+        <div class="step"><span class="n">3</span><h5>TST image — <span class="cmd">FQQ<span class="var">n</span></span></h5><p>See the TST image from the fare display</p></div>
+        <div class="step"><span class="n">4</span><h5>Go back — <span class="cmd">MP<span class="var">FXA</span></span></h5><p>Return to your pricing (MPFXA/MPFXB…)</p></div>
+        <div class="step"><span class="n">5</span><h5>More combos — <span class="cmd">FXY</span></h5><p>See other combinations offered</p></div>
+        <div class="step"><span class="n">6</span><h5>Book — <span class="cmd">FXU<span class="var">2</span></span></h5><p>Book a family from the list → generates TST</p></div>
+      </div>
+
+      <table class="tbl" style="margin-top:12px">
+        <tr><th>Entry</th><th>Purpose</th></tr>
+        <tr><td><span class="cmd">FQF<span class="var">11</span></span></td><td>Fare‑family <b>details</b> from the fare display (line 11)</td></tr>
+        <tr><td><span class="cmd">FQQ<span class="var">n</span></span></td><td>Show the <b>TST image</b> from the fare display / informative pricing</td></tr>
+        <tr><td><span class="cmd">FXU<span class="var">n</span></span></td><td>Book from the fare display — a TST gets generated</td></tr>
+        <tr><td><span class="cmd">FXA…/FF-<span class="var">CLASSIC</span></span></td><td>Price filtered to <b>one specific family</b> (e.g. <span class="cmd">FXA/R,UP,U001111/FF-CLASSIC</span>)</td></tr>
+      </table>
+
+      <h4>🖼️ FXA fare list → CLASSIC vs FLEX</h4>
+      <figure>
+        <img src="assets/image002.jpg" alt="FXA pricing output page 1 of 2 with 15 fare basis lines and family grouping" />
+        <figcaption><b>Screen: <span class="cmd">FXA/R,UP,U00111/KY</span></b> — 15 priced lines (Page 1/2). The footer maps
+        lines to families: e.g. lines <b>1,3‑4,6,8 → FLEX</b> and <b>5,9‑10,12‑15 → CLASSIC</b> (line 7 &amp; 11 belong to
+        both). Notice prices fall as you move down the list from full‑flex Y fares to restricted K fares.</figcaption>
+      </figure>
+
+      <h5>📉 Same route, 15 fares — how price tracks flexibility (EUR)</h5>
+      <div class="legend">
+        <span><span class="dot" style="background:#1e5bb8"></span>FLEX (changeable/refundable)</span>
+        <span><span class="dot" style="background:#25c3d6"></span>CLASSIC (restricted)</span>
+      </div>
+      <div id="ffChart"></div>
+
+      <h4>🔍 Drilling into a family — <span class="cmd">FQF11</span></h4>
+      <figure>
+        <img src="assets/image003.jpg" alt="FQF11 output listing what is included in FLEX vs CLASSIC fare families" />
+        <figcaption><b>Screen: <span class="cmd">FQF11</span></b> — full breakdown of the <b>FLEX</b> family (LH, FRA‑ROM):
+        what's <b>included</b> vs <b>at charge</b>, keyed by service codes.</figcaption>
+      </figure>
+
+      <h5>What FLEX includes vs what costs extra (from the screen)</h5>
+      <div class="grid g2">
+        <div class="card" style="border-top:4px solid var(--green)">
+          <h5 style="color:var(--green)">✔ Included in FLEX</h5>
+          <table class="tbl">
+            <tr><th>Code</th><th>Service</th></tr>
+            <tr><td>050</td><td>Standard seat reservation</td></tr>
+            <tr><td>05Z</td><td>Preferred seat reservation</td></tr>
+            <tr><td>07H</td><td>Earlier flight on travel day</td></tr>
+            <tr><td>06I</td><td>Change before departure</td></tr>
+            <tr><td>06J</td><td>Change after departure</td></tr>
+            <tr><td>057</td><td>Mileage accrual</td></tr>
+            <tr><td>09Q</td><td>1 cabin bag up to 8 kg</td></tr>
+            <tr><td>FBY</td><td>1 checked bag up to 23 kg</td></tr>
+            <tr><td>PSG</td><td>Priority security (Germany)</td></tr>
+            <tr><td>0G6</td><td>Priority boarding</td></tr>
+          </table>
+        </div>
+        <div class="card" style="border-top:4px solid var(--amber)">
+          <h5 style="color:var(--amber)">＄ At charge in FLEX</h5>
+          <table class="tbl">
+            <tr><th>Code</th><th>Service</th></tr>
+            <tr><td>PZS</td><td>Extra‑legroom seat reservation</td></tr>
+            <tr><td>06K</td><td>Refund before departure</td></tr>
+            <tr><td>06L</td><td>Refund after departure</td></tr>
+            <tr><td>058</td><td>Upgrade eligibility</td></tr>
+            <tr><td>018</td><td>Catering on Europe flights</td></tr>
+          </table>
+          <div class="note"><b>CLASSIC</b> (line 2 on the same screen) bundles fewer of these — it's the more
+          restricted, cheaper family.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FILTERS -->
+    <section id="filters">
+      <h3><span class="num">9</span> Pricing filters &amp; fare conditions</h3>
+      <p class="intro">Filters refine <i>any</i> pricing entry so you don't accidentally downgrade or overpay. Append them
+      after the FX command.</p>
+      <div class="grid g2">
+        <div class="card">
+          <h5>Cabin &amp; baggage</h5>
+          <table class="tbl">
+            <tr><th>Filter</th><th>Effect</th></tr>
+            <tr><td><span class="cmd">/K<span class="var">C</span></span></td><td>Force a cabin (here Business)</td></tr>
+            <tr><td><span class="cmd">/K-</span></td><td><b>Keep current cabins</b> — price two different RBDs together</td></tr>
+            <tr><td><span class="cmd">/SBF</span></td><td>Include <b>baggage</b> in fare (worldwide except the US)</td></tr>
+          </table>
+          <div class="note warn"><span class="cmd">/SBF</span> works poorly in the <b>US</b> — better to let the pax add
+          bags on the website or at the airport.</div>
+        </div>
+        <div class="card">
+          <h5>Flexibility conditions <span class="cmd">R,UP,U001111,*…</span></h5>
+          <table class="tbl">
+            <tr><th>Suffix</th><th>Selects fares that are…</th></tr>
+            <tr><td><span class="cmd">*NPE</span></td><td><b>Full‑flex</b> (incl. changes/cancellations, even no‑show)</td></tr>
+            <tr><td><span class="cmd">*RF</span></td><td><b>Refundable</b></td></tr>
+            <tr><td><span class="cmd">*RB</span></td><td><b>Changeable</b> (rebookable)</td></tr>
+            <tr><td><span class="cmd">*NR</span></td><td><b>No restriction</b></td></tr>
+          </table>
+          <p style="font-size:12.5px;color:var(--muted);margin:8px 0 0">Expand full fare conditions after pricing with
+          <span class="cmd">FQN1*PE</span>.</p>
+        </div>
+      </div>
+      <div class="note danger"><b>Careful:</b> full‑flex (<span class="cmd">*NPE</span>) fares also cover changes and
+      cancellations <i>with no‑show</i> — flexible but pricier. Match the filter to what the traveller actually needs.</div>
+    </section>
+
+    <!-- CURRENCY / FQD -->
+    <section id="currency">
+      <h3><span class="num">10</span> Currency, fare display &amp; FQP</h3>
+      <div class="grid g2">
+        <div class="card">
+          <h5>Convert currency — <span class="cmd">FQC</span></h5>
+          <table class="tbl">
+            <tr><th>Entry</th><th>Meaning</th></tr>
+            <tr><td><span class="cmd">FQC<span class="var">100</span>USD/INR</span></td><td>Convert 100 USD → INR</td></tr>
+            <tr><td><span class="cmd">FQC<span class="var">value</span><span class="var">CUR</span>/<span class="var">CUR</span></span></td><td>Generic form: value + currency / target currency</td></tr>
+          </table>
+          <h5 style="margin-top:16px">Force currency on a fare display</h5>
+          <table class="tbl">
+            <tr><th>Entry</th><th>Meaning</th></tr>
+            <tr><td><span class="cmd">FQD…,FS-<span class="var">EUR</span></span></td><td>Fare display, <b>F</b>orce <b>S</b>ell currency to find the fare basis</td></tr>
+            <tr><td><span class="cmd">FQDGVABOS/R,UP,07MAR24/CW/AAA</span></td><td>Example fare display with conditions</td></tr>
+          </table>
+        </div>
+        <div class="card">
+          <h5>FQP — partial / manual fare quote</h5>
+          <p style="font-size:13px;color:#33465e">Build a fare "by hand" segment‑by‑segment for a partial flow ticket:</p>
+          <div class="term" style="font-size:11.5px">
+<span class="p">FQP</span><span class="k">JFK</span>/A<span class="y">QR</span>/C<span class="y">R</span>/D<span class="y">20DEC</span><span class="k">BOM</span>-
+/A<span class="y">QR</span>/C<span class="y">R</span>/D<span class="y">20DEC</span><span class="k">JFK</span>-/R,UP,<span class="y">20SEP23</span></div>
+          <p style="font-size:12px;color:var(--muted);margin-top:8px">Pattern: <span class="cmd">FQP</span> DEP /A airline /C class /D date ARRIVAL — repeat per leg — then <span class="cmd">,R,UP,DOI</span> (date of issue).</p>
+        </div>
+      </div>
+
+      <h4>🖼️ Fare display (FQD) → ticket image (TQT/TST)</h4>
+      <figure>
+        <img src="assets/image004.png" alt="FQD fare display on the left and TQT ticket record TST00003 on the right" />
+        <figcaption><b>Left — <span class="cmd">FQD GIBJFK/AAA/CY/D20JAN24/R,UP,07NOV23</span>:</b> fare display; note
+        "<i>MORE FARES AVAIL IN EUR</i>", and adding <span class="cmd">FS-EUR</span> re‑displays in euros with fare‑basis
+        lines. <b>Right — <span class="cmd">TQT</span> (TST00003):</b> the ticket record for GALLIANO/JOHN — segments,
+        fare <b>2261.00 GIP</b>, equivalent <b>2611.00 EUR</b>, the tax breakdown (TX001…), grand total and the fare
+        calculation line.</figcaption>
+      </figure>
+    </section>
+
+    <!-- RTW -->
+    <section id="rtw">
+      <h3><span class="num">11</span> Round‑the‑world (RTW) fares</h3>
+      <p class="intro">Special multi‑continent fares priced as one journey. They validate against alliance rules and use
+      a dedicated pricing modifier.</p>
+      <div class="grid g2">
+        <div class="card">
+          <table class="tbl">
+            <tr><th>Entry</th><th>Meaning</th></tr>
+            <tr><td><span class="cmd">FXA…/S<span class="var">2</span>RW</span></td><td>Price the itinerary as <b>R</b>ound‑the‑<b>W</b>orld from segment 2</td></tr>
+            <tr><td><span class="cmd">FQD<span class="var">ORIGIN</span>-<span class="var">ORIGIN</span></span></td><td>RTW fare display — origin = destination</td></tr>
+            <tr><td><span class="cmd">FQD<span class="var">BKKBKK</span>/D03MAR24/R,UP,07NOV23/CD/ABA</span></td><td>Works with all airlines <b>from the alliance</b></td></tr>
+          </table>
+          <div class="note tip"><b>Rule:</b> for RTW, origin and destination cities are the <i>same</i> (you circle the
+          globe and come home), which is why the fare display uses <span class="cmd">FQD<span class="var">BKKBKK</span></span>.</div>
+        </div>
+        <div class="card">
+          <h5>The five RTW options priced (EUR)</h5>
+          <div id="rtwChart"></div>
+        </div>
+      </div>
+
+      <h4>🖼️ RTW pricing &amp; its TST</h4>
+      <figure>
+        <img src="assets/image005.png" alt="FXA round the world pricing on left and TQT ticket TST00005 for a 7-segment world trip" />
+        <figcaption><b>Left — <span class="cmd">FXA/R,UP/S2RW</span>:</b> five ROUND‑THE‑WORLD options (DGLOB34…LGLOB26)
+        with the note "<i>RW – SPECIFIC PROCESS: VALIDATE RULES</i>" and families BUSV/BUSL/ECSV. <b>Right —
+        <span class="cmd">TQT</span> (TST00005):</b> FOGG/PHILEAS' 7‑segment world trip (BKK→DOH→LHR→ORD→PHX→HNL→SYD→BKK),
+        fare 353260 THB ≈ 9296 EUR, with the full tax list.</figcaption>
+      </figure>
+    </section>
+
+    <!-- ATC / REISSUE -->
+    <section id="atc">
+      <h3><span class="num">12</span> ATC — Automated Ticket Changes (reissue)</h3>
+      <p class="intro"><b>ATC</b> reprices a <i>changed</i> itinerary and works out the fare difference + penalty. The four
+      entries mirror the booking‑side FX family — same "current vs cheapest" and "creates elements vs informative" logic.</p>
+
+      <table class="tbl">
+        <tr><th>Entry</th><th>Classes</th><th>Creates exchange elements? (TST/FO/FP)</th><th>Booking‑side twin</th></tr>
+        <tr><td><span class="cmd">FXQ</span></td><td><span class="tag t-cur">Current</span></td><td><span class="tag t-yes">Yes</span> — full exchange</td><td>≈ FXP</td></tr>
+        <tr><td><span class="cmd">FXO</span></td><td><span class="tag t-chp">Cheapest</span></td><td><span class="tag t-yes">Yes</span> — may downgrade, use filters</td><td>≈ FXB</td></tr>
+        <tr><td><span class="cmd">FXF</span></td><td><span class="tag t-cur">Current</span></td><td><span class="tag t-no">No</span> — <span class="tag t-info">informative</span>, confirm with FXQ</td><td>≈ FXX</td></tr>
+        <tr><td><span class="cmd">FXE</span></td><td><span class="tag t-chp">Cheapest</span></td><td><span class="tag t-no">No</span> — informative, confirm with FXO</td><td>≈ FXR</td></tr>
+      </table>
+
+      <h4>The ATC workflow</h4>
+      <div class="flow">
+        <div class="step"><span class="n">1</span><h5>Verify ticket</h5><p>Ticket is issued and can <b>no longer be voided</b></p></div>
+        <div class="step"><span class="n">2</span><h5>Rebook</h5><p>Book the new flights</p></div>
+        <div class="step"><span class="n">3</span><h5>Price change</h5><p><span class="cmd">FXQ</span>/<span class="cmd">FXO</span>/<span class="cmd">FXF</span>/<span class="cmd">FXE</span></p></div>
+        <div class="step"><span class="n">4</span><h5>Confirm</h5><p>If you used FXF/FXE, confirm with <span class="cmd">FXQ</span>/<span class="cmd">FXO</span></p></div>
+        <div class="step"><span class="n">5</span><h5>Decide</h5><p>Pax agrees → document &amp; issue. Pax declines → <span class="cmd">IR</span> (ignore)</p></div>
+      </div>
+
+      <div class="grid g2">
+        <div class="card">
+          <h5>Reissue &amp; repricing entries</h5>
+          <table class="tbl">
+            <tr><th>Entry</th><th>Meaning</th></tr>
+            <tr><td><span class="cmd">FXF/S<span class="var">2-5</span>/TKT<span class="var">num</span></span></td><td>Reprice segments 2‑5 against an existing ticket number</td></tr>
+            <tr><td><span class="cmd">FQR</span></td><td>See the <b>old TST</b> — prices only, without flight info</td></tr>
+            <tr><td><span class="cmd"><span class="var">2</span>/HK</span></td><td>Change itinerary status (segment 2 → confirmed)</td></tr>
+            <tr><td><span class="cmd">TTP/T<span class="var">n</span>/RT</span></td><td>Reissue the ticket from TST n</td></tr>
+            <tr><td><span class="cmd">IR</span></td><td>Ignore/undo the changes</td></tr>
+          </table>
+        </div>
+        <div class="card">
+          <h5>Key idea for the interview</h5>
+          <p style="font-size:13.5px;color:#33465e">ATC is just "pricing, but for a change". If you can explain the
+          <a href="#pricing">FX matrix</a>, you already understand ATC — just add <i>"and it also calculates the fare
+          difference + penalty and builds the exchange elements (FO, FP)."</i></p>
+          <div class="note"><b>FO</b> = Original issue / form‑of‑ticket detail; <b>FP</b> = Form of payment. ATC creates
+          these automatically for the exchange.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TICKETING / EMD -->
+    <section id="ticketing">
+      <h3><span class="num">13</span> Ticketing, EMD &amp; carriers</h3>
+      <div class="grid g2">
+        <div class="card">
+          <h5>Issuing &amp; carriers</h5>
+          <table class="tbl">
+            <tr><th>Entry</th><th>Meaning</th></tr>
+            <tr><td><span class="cmd">TGGSD-<span class="var">XX</span>T</span></td><td>Find the ticketing <b>issuing carrier</b> for a country</td></tr>
+            <tr><td><span class="cmd">FXP/R,VC-<span class="var">UA</span></span></td><td>Add a <b>V</b>alidating <b>C</b>arrier (UA) while pricing</td></tr>
+            <tr><td><span class="cmd">TTP/T<span class="var">n</span>/RT</span></td><td>Issue/reissue ticket from TST n</td></tr>
+            <tr><td><span class="cmd">HE ETT <span class="var">XX</span></span></td><td>Help — can this airline's ticket be <b>voided</b>?</td></tr>
+          </table>
+        </div>
+        <div class="card">
+          <h5>EMD &amp; exchanges</h5>
+          <table class="tbl">
+            <tr><th>Entry</th><th>Meaning</th></tr>
+            <tr><td><span class="cmd">TTP/TTM/T<span class="var">n</span>/M<span class="var">m</span>/RT</span></td><td>Issue <b>both</b> ticket (TST n) <b>and EMD</b> (TSM m)</td></tr>
+            <tr><td><span class="cmd">EGSD/V<span class="var">XX</span></span></td><td>Does airline XX use <b>EMD</b> for services?</td></tr>
+            <tr><td><span class="cmd">TWD/O</span></td><td>Retrieve <b>all tickets exchanged</b></td></tr>
+          </table>
+          <div class="note"><b>EMD</b> = Electronic Miscellaneous Document (for ancillaries/services). <b>TSM</b> is the
+          service record, the EMD's equivalent of a TST.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOTELS -->
+    <section id="hotels">
+      <h3><span class="num">14</span> Hotels — Amadeus Assistant</h3>
+      <p class="intro">Hotel cryptic entries follow a family: <span class="cmd">HA</span> availability,
+      <span class="cmd">HL</span> location, <span class="cmd">HS</span> sell, <span class="cmd">HI</span> inventory,
+      <span class="cmd">HP</span>/<span class="cmd">HF</span> features, plus <span class="cmd">HE</span> help.</p>
+      <figure>
+        <img src="assets/image006.png" alt="Amadeus Assistant hotels reference sheet listing HA, HL, HS, HI, HP entries" />
+        <figcaption><b>Amadeus Assistant — Hotels quick reference.</b> Full grid of hotel entries and their meanings.</figcaption>
+      </figure>
+      <div class="grid g3">
+        <div class="card"><h5>Availability — <span class="cmd">HA</span></h5>
+          <table class="tbl">
+            <tr><td><span class="cmd">HA<span class="var">3</span></span></td><td>Availability for segment 3</td></tr>
+            <tr><td><span class="cmd">HA <span class="var">ORD/SR-THR</span></span></td><td>Special negotiated rates</td></tr>
+            <tr><td><span class="cmd">HA<span class="var">LW…/QU-100</span></span></td><td>Rate limit under 100</td></tr>
+            <tr><td><span class="cmd">MD</span> / <span class="cmd">MN</span></td><td>More availability / next day</td></tr>
+          </table>
+        </div>
+        <div class="card"><h5>Location — <span class="cmd">HL</span></h5>
+          <table class="tbl">
+            <tr><td><span class="cmd">HL <span class="var">EM NYC</span></span></td><td>Locations for a hotel chain</td></tr>
+            <tr><td><span class="cmd">HL <span class="var">HI FR</span></span></td><td>Chain in a specific country</td></tr>
+            <tr><td><span class="cmd">DRP <span class="var">CAT</span></span></td><td>Points‑of‑reference categories</td></tr>
+          </table>
+        </div>
+        <div class="card"><h5>Sell / inventory / decode</h5>
+          <table class="tbl">
+            <tr><td><span class="cmd">HS<span class="var">2</span>A</span></td><td>Sell from single‑property availability</td></tr>
+            <tr><td><span class="cmd">HI</span> / <span class="cmd">HI2</span></td><td>Inventory: single / multi‑property</td></tr>
+            <tr><td><span class="cmd">DNH <span class="var">LW</span></span></td><td>Decode hotel chain code</td></tr>
+            <tr><td><span class="cmd">HF<span class="var">3</span></span> / <span class="cmd">HP<span class="var">2</span></span></td><td>Features / policy of a hotel</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="note"><b>Pattern to remember:</b> second letter = the action —
+      <b>A</b>vailability, <b>L</b>ocation, <b>S</b>ell, <b>I</b>nventory, <b>F</b>eatures, <b>P</b>olicy. Prefix with
+      <span class="cmd">HE</span> for help (<span class="cmd">HE HA</span>, <span class="cmd">HE HS</span>…).</div>
+    </section>
+
+    <!-- CARS -->
+    <section id="cars">
+      <h3><span class="num">15</span> Cars — Amadeus Assistant</h3>
+      <p class="intro">Mirror of the hotel logic with <b>C</b>: <span class="cmd">CA</span> availability,
+      <span class="cmd">CS</span> sell, <span class="cmd">CL</span> location, <span class="cmd">CR</span> policy/rules.</p>
+      <figure>
+        <img src="assets/image007.png" alt="Amadeus Assistant cars reference sheet with CA, CS, CL, CR entries and car type codes" />
+        <figcaption><b>Amadeus Assistant — Cars quick reference,</b> including the all‑important <b>car‑type code</b>
+        table (class · type · transmission · A/C).</figcaption>
+      </figure>
+      <div class="grid g2">
+        <div class="card"><h5>Core car entries</h5>
+          <table class="tbl">
+            <tr><th>Entry</th><th>Meaning</th></tr>
+            <tr><td><span class="cmd">CA<span class="var">3</span></span></td><td>Car availability from segment 3</td></tr>
+            <tr><td><span class="cmd">CS<span class="var">3</span></span></td><td>Sell line 3 from availability</td></tr>
+            <tr><td><span class="cmd">CL <span class="var">NYC</span></span></td><td>Car locations in a city</td></tr>
+            <tr><td><span class="cmd">DNC <span class="var">ALAMO</span></span></td><td>Decode car‑company code</td></tr>
+            <tr><td><span class="cmd">CR<span class="var">4</span></span></td><td>Company info / rules (Complete Access)</td></tr>
+            <tr><td><span class="cmd">4/DD-15AUG</span></td><td>Modify drop‑off date on segment 4</td></tr>
+          </table>
+        </div>
+        <div class="card"><h5>Car‑type codes (4 characters)</h5>
+          <table class="tbl">
+            <tr><th>Position</th><th>Examples</th></tr>
+            <tr><td><b>1 · Class</b></td><td>M‑Mini · E‑Economy · C‑Compact · I‑Intermediate · S‑Standard · F‑Full · P‑Premium · L‑Luxury · X‑Special</td></tr>
+            <tr><td><b>2 · Type</b></td><td>C‑2/4dr · D‑4dr · W‑Wagon · V‑Van · L‑Limo · K‑Truck · S‑Sport · T‑Convertible · F‑4WD · J‑All‑terrain</td></tr>
+            <tr><td><b>3 · Transmission</b></td><td>A‑Automatic · M‑Manual</td></tr>
+            <tr><td><b>4 · A/C</b></td><td>R‑Yes (has A/C) · N‑No</td></tr>
+          </table>
+          <div class="note tip">So a code like <span class="cmd">ICAR</span> = <b>I</b>ntermediate, 2/4‑door (<b>C</b>),
+          <b>A</b>utomatic, with A/C (<b>R</b>).</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMMAND FINDER -->
+    <section id="reference">
+      <h3><span class="num">⌦</span> Command finder</h3>
+      <p class="intro">Search all <span id="cmdCount">90+</span> entries from the notes. Type a command or a keyword
+      (e.g. "cheapest", "seat", "hotel", "reissue").</p>
+      <div class="navsearch" style="padding:0;margin-bottom:8px;max-width:420px">
+        <input id="cmdSearch" placeholder="🔎 Search commands…" style="color:var(--ink);background:#fff;border:1px solid var(--line)" />
+      </div>
+      <div class="filters" id="cmdFilters"></div>
+      <div class="cmdlist" id="cmdList"></div>
+      <div class="nohits" id="noHits">No commands match that search.</div>
+    </section>
+
+    <!-- FLASHCARDS -->
+    <section id="flashcards">
+      <h3><span class="num">▢</span> Flashcards — click to flip</h3>
+      <p class="intro">Cover the answer, read the command, say what it does — then flip to check.</p>
+      <div class="cards" id="flashcards"></div>
+    </section>
+
+    <!-- QUIZ -->
+    <section id="quiz">
+      <h3><span class="num">?</span> Practice quiz</h3>
+      <p class="intro">Ten interview‑style questions drawn straight from the notes. Pick an answer to see the explanation.</p>
+      <div class="quiz">
+        <div class="qbar">
+          <div><b>Amadeus rapid‑fire</b></div>
+          <div class="score">Score: <span id="score">0</span> / <span id="qtotal">0</span></div>
+        </div>
+        <div class="qcard">
+          <div class="qq" id="qQuestion">…</div>
+          <div class="qopts" id="qOpts"></div>
+          <div class="qexpl" id="qExpl"></div>
+          <div class="qnav">
+            <button class="btn ghost" id="qPrev">‹ Prev</button>
+            <button class="btn" id="qNext">Next ›</button>
+            <span style="flex:1"></span>
+            <span id="qProgress" style="align-self:center;font-size:13px;color:#cfe0f7"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>Built from the "Training Notes" email for Amadeus interview preparation. All 7 attached screenshots are
+      reproduced and annotated above. This is a study aid — always verify entries against the live Amadeus help pages
+      (<span class="cmd">HE</span> + command) as behaviour varies by market and office (OID).</p>
+      <p style="margin-top:8px">Sections: Encode/Decode · Time/Zulu · Availability · RBD · PNR · Seats · Pricing ·
+      Fare families · Filters · Currency/FQD · RTW · ATC/Reissue · Ticketing/EMD · Hotels · Cars.</p>
+    </footer>
+  </main>
+</div>
+<button class="backtop" id="backtop" title="Back to top">↑</button>
+
+<script>
+/* ---------------- DATA: command reference ---------------- */
+const COMMANDS = [
+  // Encode / Decode
+  ["DAN BANGALORE","Decode airport/city by name → code","Encode/Decode"],
+  ["DAC BLR","Decode airport code → city name","Encode/Decode"],
+  ["DACBLR/N","Nearest airport to a city","Encode/Decode"],
+  ["DNA6E","Decode airline code","Encode/Decode"],
+  ["DNE777","Decode equipment (aircraft) type","Encode/Decode"],
+  ["DC SENEGAL","Decode country → 2-letter code","Encode/Decode"],
+  ["GG COU IN","Country capital, attractions, quick facts, holidays","Encode/Decode"],
+  ["DNS ABCD","Decode name of state (4-letter code)","Encode/Decode"],
+  ["DNSUS","2-letter country → how many state cities","Encode/Decode"],
+  ["GG APT BLR","How many terminals an airport has","Encode/Decode"],
+  ["HEDD","Help page for the DD entry","Encode/Decode"],
+  // Time
+  ["DDBLR","Current local time at a city","Time"],
+  ["DD LON/BLR","Time difference between two cities","Time"],
+  ["DD LHR 1800/BLR","Specific time in one city vs another","Time"],
+  ["DDZZZ1800/LHR","Convert Zulu/UTC time to local","Time"],
+  // Availability
+  ["SN27APRBLRBOM1100","Schedule — all RBDs from a time","Availability"],
+  ["AN27APRBLRBOM1100","Availability — only bookable RBDs","Availability"],
+  ["SN…/KF","Filter to First cabin","Availability"],
+  ["SN…/KC","Filter to Business cabin","Availability"],
+  ["SN…/KW","Premium economy without economy","Availability"],
+  ["SN…/KY","Economy including premium economy","Availability"],
+  ["SN…/KM","Economy without premium economy","Availability"],
+  ["SN…/CY","Show one specific RBD","Availability"],
+  ["SN20DECBLRROM/XDXB,CDG","Force transit via DXB,CDG","Availability"],
+  ["SN20DECBLRROM/X-DXB,CDG","Exclude transit points","Availability"],
+  ["SN20DECBLRROM/ALH/MA","Air segments only (A=air)","Availability"],
+  ["SN20DECBLRROM/ALH1881,SQ508","Filter by airlines/flights","Availability"],
+  ["SCR05JAN","Schedule for the return journey","Availability"],
+  ["MPSN / MPAN","Move to previous availability","Availability"],
+  // PNR
+  ["APBLR 9876543210","Phone field (mandatory)","PNR"],
+  ["NM1SURNAME/NAME","Name element (mandatory)","PNR"],
+  ["SS1Y1","Sell 1 seat class Y line 1","PNR"],
+  ["SS1IO1","Sell two different RBDs on line 1","PNR"],
+  ["TKOK","Ticketing time-limit element","PNR"],
+  ["RF NAME","Received-from (optional, per OID)","PNR"],
+  ["ER","End & Retrieve — save the PNR","PNR"],
+  ["SBY1/2","Forced RBD change, segments 1&2","PNR"],
+  ["2/HK","Change segment status to confirmed","PNR"],
+  ["RTRN","Display remarks (RM) of the PNR","PNR"],
+  ["DMI","Display MCT information","PNR"],
+  ["DM","Display MCT for the booking","PNR"],
+  ["DM2/3","MCT between segments 2 and 3","PNR"],
+  // Seats
+  ["ST/NSSA","Request aisle seat","Seats"],
+  ["ST/NSSW","Request window seat","Seats"],
+  ["RTSTR","Retrieve seat map/data","Seats"],
+  // Pricing
+  ["FXP","Price current classes, creates TST","Pricing"],
+  ["FXX","Price current classes, informative (no TST)","Pricing"],
+  ["FXB","Price cheapest, creates TST (may downgrade)","Pricing"],
+  ["FXR","Price cheapest, informative (may downgrade)","Pricing"],
+  ["FXA","Price lowest + list, select FXU to create TST","Pricing"],
+  ["FXT1","Choose a priced option when no *RB","Pricing"],
+  ["FXU1","Book selected line → creates TST","Pricing"],
+  ["FXY","Show more fare combinations / upsell","Pricing"],
+  ["MPFXA","Move to previous pricing entry","Pricing"],
+  ["TTE/ALL","Delete all TSTs","Pricing"],
+  ["FQN1*PE","Fare rules/penalties after pricing","Pricing"],
+  // Fare families
+  ["FQF11","Fare-family details (line 11)","Fare families"],
+  ["FQQn","TST image from fare display","Fare families"],
+  ["FXUn","Book from fare display, generate TST","Fare families"],
+  ["FXA…/FF-CLASSIC","Price filtered to one fare family","Fare families"],
+  // Filters
+  ["/KC","Force Business cabin","Filters"],
+  ["/K-","Keep current cabins (two RBDs)","Filters"],
+  ["/SBF","Include baggage (except US)","Filters"],
+  ["R,UP,U001111,*NPE","Full-flex fares","Filters"],
+  ["R,UP,U001111,*RF","Refundable fares","Filters"],
+  ["R,UP,U001111,*RB","Changeable fares","Filters"],
+  ["R,UP,U001111,*NR","No-restriction fares","Filters"],
+  // Currency / FQD
+  ["FQC100USD/INR","Convert 100 USD to INR","Currency"],
+  ["FQD…,FS-EUR","Force sell currency on fare display","Currency"],
+  ["FQDGVABOS/R,UP,07MAR24/CW/AAA","Fare display with conditions","Currency"],
+  ["FQPJFK/AQR/CR/D20DECBOM-…","Manual/partial fare quote","Currency"],
+  // RTW
+  ["FXA…/S2RW","Price as round-the-world from segment 2","RTW"],
+  ["FQDBKKBKK/D03MAR24/R,UP,07NOV23/CD/ABA","RTW fare display (alliance)","RTW"],
+  // ATC
+  ["FXQ","Reissue: current classes, creates elements","ATC"],
+  ["FXO","Reissue: cheapest, creates elements","ATC"],
+  ["FXF","Reissue: current classes, informative","ATC"],
+  ["FXE","Reissue: cheapest, informative","ATC"],
+  ["FXF/S2-5/TKTnnn","Reprice segments vs ticket number","ATC"],
+  ["FQR","Old TST prices without flight info","ATC"],
+  ["TTP/Tn/RT","Reissue ticket from TST n","ATC"],
+  ["IR","Ignore/undo changes","ATC"],
+  // Ticketing
+  ["TGGSD-XXT","Find ticketing issuing carrier","Ticketing"],
+  ["FXP/R,VC-UA","Add validating carrier while pricing","Ticketing"],
+  ["TTP/TTM/Tn/Mm/RT","Issue ticket + EMD together","Ticketing"],
+  ["EGSD/VXX","Does airline use EMD for services?","Ticketing"],
+  ["TWD/O","Retrieve all tickets exchanged","Ticketing"],
+  ["HE ETT XX","Help: can this airline's ticket be voided?","Ticketing"],
+  // Hotels
+  ["HA3","Hotel availability for segment 3","Hotels"],
+  ["HL EM NYC","Hotel locations for a chain","Hotels"],
+  ["HS2A","Sell from single-property availability","Hotels"],
+  ["HI","Hotel inventory single property","Hotels"],
+  ["DNH LW","Decode hotel chain code","Hotels"],
+  ["HF3","Hotel features from segment 3","Hotels"],
+  ["HP2","Hotel policy info","Hotels"],
+  // Cars
+  ["CA3","Car availability from segment 3","Cars"],
+  ["CS3","Sell car line 3","Cars"],
+  ["CL NYC","Car locations in a city","Cars"],
+  ["DNC ALAMO","Decode car-company code","Cars"],
+  ["CR4","Car company info/rules","Cars"],
+  ["4/DD-15AUG","Modify car drop-off date","Cars"],
+];
+
+/* ---------------- GLOSSARY ---------------- */
+const GLOSSARY = [
+  ["GDS","Global Distribution System — the booking network agents connect to (Amadeus is one)."],
+  ["PNR","Passenger Name Record — the booking file holding name, itinerary, contacts, ticketing."],
+  ["RBD","Reservation Booking Designator — the single letter (Y, J, K…) that fixes fare & cabin."],
+  ["TST","Transitional Stored Ticket — the priced record that becomes the ticket."],
+  ["TSM","Transitional Service Message — the EMD's equivalent of a TST (for ancillaries)."],
+  ["EMD","Electronic Miscellaneous Document — used to charge for services/ancillaries."],
+  ["MCT","Minimum Connection Time — least time needed to transfer at an airport."],
+  ["ATC","Automated Ticket Change — the reissue/exchange pricing flow."],
+  ["Zulu (Z)","UTC time; airlines store schedules in Zulu to stay unambiguous worldwide."],
+  ["RM","Remark element inside a PNR (view with RTRN)."],
+  ["OID","Office ID — your agency configuration; controls things like whether RF is mandatory."],
+  ["ROE","Rate of Exchange — IATA rate used to convert fares in the calculation line."],
+  ["*RB","Flag: this fare line needs re-book / can't be actively priced right now."],
+  ["Validating Carrier","The airline that owns the ticket / gets paid (VC in pricing)."],
+  ["Fare family","A named bundle (Classic, Flex…) packaging seats, bags, changes, refunds."],
+  ["RTW","Round-the-World fare — one journey circling the globe, origin = destination."],
+];
+
+/* ---------------- QUIZ ---------------- */
+const QUIZ = [
+  ["Which entry prices the itinerary in the CURRENT classes AND creates a TST?",
+    ["FXX","FXP","FXB","FXR"],1,
+    "FXP keeps current RBDs and creates a TST. FXX is the informative (no-TST) twin; FXB/FXR use the cheapest classes."],
+  ["What does the /X-DXB,CDG modifier do on an availability entry?",
+    ["Forces transit via DXB and CDG","Removes/excludes DXB and CDG as connecting points","Shows only air segments","Filters to those airlines"],1,
+    "A plain /XDXB,CDG adds stops; the minus sign /X-DXB,CDG excludes them."],
+  ["SN vs AN — what's the difference?",
+    ["SN shows only available RBDs; AN shows all","They are identical","SN shows all RBDs; AN shows only available ones","SN is for schedules only, AN for hotels"],2,
+    "SN lists every RBD (even sold out); AN lists only bookable ones."],
+  ["Which cabin filter means 'Economy including Premium Economy'?",
+    ["/KF","/KC","/KW","/KY"],3,
+    "/KF First, /KC Business, /KW Premium-Eco (without eco), /KY Economy incl. premium, /KM Economy only."],
+  ["To convert 100 USD into INR you type…",
+    ["FQC100USD/INR","FXC100USD/INR","DC100USD/INR","FQD100USD/INR"],0,
+    "FQC = Fare Quote Currency conversion: FQC<value><cur>/<target cur>."],
+  ["In ATC, which entry is the CHEAPEST option that also creates the exchange elements?",
+    ["FXQ","FXF","FXO","FXE"],2,
+    "FXO ≈ FXB for changes: cheapest classes and creates TST/FO/FP. FXE is its informative twin."],
+  ["What are the mandatory elements to save a PNR?",
+    ["Name, Itinerary, Seat, Meal, ER","Phone (AP), Name (NM), Itinerary, Ticketing (TKOK), Received-from, ER","Only Name and ER","Fare, Ticket, EMD, ER"],1,
+    "P-N-I-T-R-E: Phone, Name, Itinerary, TKOK, Received-from (optional per OID), End (ER)."],
+  ["The *RB flag in a price list means…",
+    ["Refundable fare","The fare needs re-book / can't be actively priced now","Round-the-world","Business cabin"],1,
+    "*RB marks lines you can't actively price yet; if none appear you can pick with FXT1."],
+  ["Which entry issues BOTH the ticket and the EMD?",
+    ["TTP/Tn/RT","TTP/TTM/Tn/Mm/RT","EGSD/VXX","TWD/O"],1,
+    "TTP/TTM/T<TST>/M<TSM>/RT issues the ticket (TST) and EMD (TSM) together."],
+  ["A round-the-world fare display uses which pattern?",
+    ["FQDBKK-LON","FQDBKKBKK/D…","FXP/RW","FQCBKK/RW"],1,
+    "RTW means origin = destination, so the fare display doubles the city: FQDBKKBKK…"],
+];
+
+/* ---------------- CHARTS ---------------- */
+const FXP_DATA = [["JRTIN7+JR",13796.57],["JRTIN7",10607.93],["JRRZFIN1",6442.65],["IEEESIN1+",3568.73],["HAAARIN1",3112.89]];
+const FF_DATA = [ // [basis, price, family] from image002 (KY)
+  ["YFF77WW+Y",1746.55,"F"],["YCOUPON",1691.55,"C"],["YFF77WW+U",1496.55,"F"],["YEUFLXP0",1300.55,"F"],
+  ["YEUCLSP0",1200.55,"C"],["BEUFLXP0+",945.55,"F"],["BEUCLSP0+",895.55,"C"],["UEUFLXP0",800.55,"F"],
+  ["UEUCLSP0+",470.55,"C"],["HEUCLSP0+",415.55,"C"],["KEUFLXP3+",290.55,"F"],["SEUCLSP3+",285.55,"C"],
+  ["TEUCLSP3+",265.55,"C"],["LEUCLSP3+",250.55,"C"],["KEUCLSP3",240.55,"C"]];
+const RTW_DATA = [["DGLOB34",10707.99],["DONE4",10707.99],["IGLOB26",9210.15],["LONE4",6664.06],["LGLOB26",5923.22]];
+
+function barChart(el, data, opt={}){
+  const max = Math.max(...data.map(d=>d[1]));
+  el.innerHTML = data.map(d=>{
+    const pct = (d[1]/max*100).toFixed(1);
+    const fam = d[2];
+    const color = fam==='F' ? 'linear-gradient(90deg,#1e5bb8,#3f7fd6)' :
+                  fam==='C' ? 'linear-gradient(90deg,#25c3d6,#7fe3ef)' :
+                  'linear-gradient(90deg,#1e5bb8,#25c3d6)';
+    return `<div class="bar"><span class="lbl" title="${d[0]}">${d[0]}</span>
+      <span class="track"><span class="fill" style="width:${pct}%;background:${color}"></span></span>
+      <span class="val">${d[1].toLocaleString(undefined,{minimumFractionDigits:2})}</span></div>`;
+  }).join('');
+}
+
+/* ---------------- RENDER ---------------- */
+function el(id){return document.getElementById(id);}
+
+// Glossary
+el('glossaryGrid').innerHTML = GLOSSARY.map(g=>
+  `<div class="card"><h4 style="margin-bottom:4px"><span class="cmd">${g[0]}</span></h4>
+   <p style="font-size:13px;color:#33465e;margin:0">${g[1]}</p></div>`).join('');
+
+// Command finder
+const cats = [...new Set(COMMANDS.map(c=>c[2]))];
+let activeCat = "All";
+el('cmdCount').textContent = COMMANDS.length;
+function renderFilters(){
+  el('cmdFilters').innerHTML = ['All',...cats].map(c=>
+    `<span class="chip${c===activeCat?' active':''}" data-c="${c}">${c}</span>`).join('');
+  el('cmdFilters').querySelectorAll('.chip').forEach(ch=>ch.onclick=()=>{activeCat=ch.dataset.c;renderFilters();renderCmds();});
+}
+function renderCmds(){
+  const q = el('cmdSearch').value.trim().toLowerCase();
+  const rows = COMMANDS.filter(c=>{
+    const inCat = activeCat==='All'||c[2]===activeCat;
+    const inQ = !q || c[0].toLowerCase().includes(q) || c[1].toLowerCase().includes(q) || c[2].toLowerCase().includes(q);
+    return inCat && inQ;
+  });
+  el('cmdList').innerHTML = rows.map(c=>
+    `<div class="cmdrow"><span class="c">${c[0]}</span><span class="d">${c[1]}<small>${c[2]}</small></span></div>`).join('');
+  el('noHits').style.display = rows.length? 'none':'block';
+}
+el('cmdSearch').addEventListener('input',renderCmds);
+renderFilters(); renderCmds();
+
+// Flashcards
+const FLASH = [["FXP","Price current classes → creates a TST"],["FXB","Price the cheapest → creates TST (may downgrade)"],
+["FXA","Lowest fare + list; pick a line with FXU to create TST"],["TTE/ALL","Delete all TSTs"],
+["SN vs AN","SN = all RBDs · AN = only available"],["/KY","Economy including premium economy"],
+["ST/NSSW","Request a window seat"],["DACBLR/N","Nearest airport to a city"],
+["FQC100USD/INR","Convert 100 USD → INR"],["DMI","Display MCT information"],
+["FXQ","Reissue in current classes, creates exchange elements"],["TTP/Tn/RT","Reissue ticket from TST n"],
+["FQF11","Fare-family details, line 11"],["GG COU IN","Country capital, facts, holidays"],
+["ER","End & Retrieve — saves the PNR"]];
+el('flashcards').innerHTML = FLASH.map(f=>
+  `<div class="fc"><div class="fc-in"><div class="fc-f">${f[0]}</div><div class="fc-b">${f[1]}</div></div></div>`).join('');
+el('flashcards').querySelectorAll('.fc').forEach(c=>c.onclick=()=>c.classList.toggle('flip'));
+
+// Charts
+barChart(el('fxpChart'),FXP_DATA);
+barChart(el('ffChart'),FF_DATA);
+barChart(el('rtwChart'),RTW_DATA);
+
+// Quiz
+let qi=0, score=0, answered=[];
+el('qtotal').textContent = QUIZ.length;
+function renderQuiz(){
+  const [q,opts,ans,expl]=QUIZ[qi];
+  el('qQuestion').textContent = `Q${qi+1}. ${q}`;
+  el('qProgress').textContent = `Question ${qi+1} of ${QUIZ.length}`;
+  el('qOpts').innerHTML = opts.map((o,i)=>`<button class="qopt" data-i="${i}">${o}</button>`).join('');
+  const ex = el('qExpl'); ex.className='qexpl'; ex.textContent='';
+  const prev = answered[qi];
+  el('qOpts').querySelectorAll('.qopt').forEach(b=>{
+    b.onclick=()=>{
+      if(answered[qi]!=null) return;
+      const chosen=+b.dataset.i;
+      answered[qi]=chosen;
+      el('qOpts').querySelectorAll('.qopt').forEach((bb,j)=>{
+        if(j===ans) bb.classList.add('correct');
+        if(j===chosen && chosen!==ans) bb.classList.add('wrong');
+        bb.style.pointerEvents='none';
+      });
+      if(chosen===ans) score++;
+      el('score').textContent=score;
+      ex.textContent='💡 '+expl; ex.classList.add('show');
+    };
+    if(prev!=null){
+      b.style.pointerEvents='none';
+      const j=+b.dataset.i;
+      if(j===ans) b.classList.add('correct');
+      if(j===prev && prev!==ans) b.classList.add('wrong');
+    }
+  });
+  if(prev!=null){ ex.textContent='💡 '+expl; ex.classList.add('show'); }
+  el('qPrev').disabled = qi===0;
+  el('qNext').textContent = qi===QUIZ.length-1 ? 'Restart ↻' : 'Next ›';
+}
+el('qPrev').onclick=()=>{ if(qi>0){qi--;renderQuiz();} };
+el('qNext').onclick=()=>{
+  if(qi===QUIZ.length-1){ qi=0;score=0;answered=[];el('score').textContent=0;renderQuiz(); }
+  else { qi++; renderQuiz(); }
+};
+renderQuiz();
+
+/* ---------------- NAV: scroll spy + filter + back-to-top ---------------- */
+const navLinks=[...document.querySelectorAll('#nav a')];
+const secs=navLinks.map(a=>document.querySelector(a.getAttribute('href')));
+const obs=new IntersectionObserver(es=>{
+  es.forEach(e=>{ if(e.isIntersecting){
+    navLinks.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id));
+  }});
+},{rootMargin:'-20% 0px -70% 0px'});
+secs.forEach(s=>s&&obs.observe(s));
+
+el('navFilter').addEventListener('input',e=>{
+  const q=e.target.value.toLowerCase();
+  navLinks.forEach(a=>{ a.style.display = a.textContent.toLowerCase().includes(q)?'':'none'; });
+  document.querySelectorAll('#nav .grp').forEach(g=>g.style.display=q?'none':'');
+});
+
+const bt=el('backtop');
+window.addEventListener('scroll',()=>bt.classList.toggle('show',window.scrollY>500));
+bt.onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
+</script>
+</body>
+</html>
