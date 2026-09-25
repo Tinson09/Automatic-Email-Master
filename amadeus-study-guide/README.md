@@ -1,13 +1,17 @@
 # Amadeus GDS — Interactive Interview Study Guide
 
-A single-page, self-contained interactive study guide built from the "Training Notes" email
+A single, self-contained interactive study guide built from the "Training Notes" email
 (an Amadeus interview-prep note). It turns every cryptic command and all 7 attached screenshots
 into searchable cards, decision matrices, annotated terminal captures, charts, flashcards and a quiz.
 
+Everything — HTML, CSS, JavaScript and all 7 images (embedded as base64 data URIs) — lives in the
+**single `index.html` file**. There are no separate JS, CSS, or image files and no external/CDN
+dependencies.
+
 ## Open it
 
-Just open `index.html` in any modern browser — no build step, no dependencies, works offline
-(`file://` is fine). Images live in `assets/`.
+Just double-click / open `index.html` in any modern browser — no build step, no dependencies,
+fully offline (`file://` works). You can also email or share the one file as‑is.
 
 ```bash
 # optional: serve locally
@@ -15,6 +19,11 @@ cd amadeus-study-guide
 python3 -m http.server 8000
 # then visit http://localhost:8000
 ```
+
+## Navigation
+
+The guide shows **one section at a time** (a wizard). Move between sections with the
+**Previous / Next** bar at the bottom, the **left sidebar**, or the **← / →** arrow keys.
 
 ## What's inside
 
@@ -36,4 +45,5 @@ python3 -m http.server 8000
 
 ## Source screenshots
 
-`assets/image001…007` are the original attachments from the email, annotated in context.
+All 7 original email attachments are embedded directly in `index.html` (base64 data URIs) and
+annotated in context — no external image files are required.
